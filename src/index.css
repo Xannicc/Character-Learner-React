@@ -1,11 +1,28 @@
+@font-face {
+    font-family: "onsen-japan";
+    src: url("./assets/fonts/OnsenJapan.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root {
+    --dark1-color: #3E3E3E;
+    --dark2-color: #242424;
+    --dark3-color: #121212;
+    --darkText-color: #ffffffde;
+
+    --light1-color: #fafafa;
+    --light2-color: #e4e5f1;
+    --light3-color: #d2d3db;
+    --lightText-color: #484b6a;
+
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
 
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
+    color: var(--darkText-color);
+    background-color: var(--dark2-color);
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -20,18 +37,56 @@ body {
     justify-content: center;
     min-width: 320px;
     min-height: 100vh;
-    overflow: hidden;
+}
+
+.image-container {
+    display: flex;
+    height: 100%;
+    aspect-ratio: 1;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-button {
+    height: 70%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--darkText-color);
+    transition: all 0.2s ease-in-out;
+    margin: clamp(10px, 2%, 20px);
+    
+    opacity: 60%;
+}
+
+.circle-button:hover {
+    opacity: 60%;
+    cursor: pointer;
+}
+
+.circle-button:active {
+    transform: translateY(3px);
+}
+
+.circle-button-image {
+    width: 80%;
+    height: 80%;
+    transition: all 0.2s ease-in-out;
+}
+
+.circle-button-image:hover {
+    width: 140%;
+    height: 140%;
+    cursor: pointer;
 }
 
 @media (prefers-color-scheme: light) {
     :root {
-        color: #213547;
-        background-color: #ffffff;
-    }
-    a:hover {
-        color: #747bff;
-    }
-    button {
-        background-color: #f9f9f9;
+        color: var(--lightText-color);
+        background-color: var(--light1-color);
     }
 }

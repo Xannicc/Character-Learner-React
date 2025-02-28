@@ -1,0 +1,10 @@
+export const darkText = "#ffffffde"
+export const darkColor1 = "#3E3E3E"
+export const darkColor2 = "#242424"
+export const darkColor3 = "#121212"
+export const darkColor4 = "#aeacb4"
+
+export const lightText = "#484b6a"
+export const lightColor1 = "#fafafa"
+export const lightColor2 = "#e4e5f1"
+export const lightColor3 = "#d2d3db"

@@ -21,15 +21,18 @@ function NavBar() {
     return (
         <NavContainer>
             <NavButton
+                id="profile"
                 svg={profileIcon}
                 color={darkText}
             />
             <NavButton
+                id="settings"
                 svg={cogIcon}
                 color={darkText}
                 animation={"rotate(90deg)"}
             />
             <NavButton
+                id="content"
                 text="CONTENT"
                 color={darkText}
             />

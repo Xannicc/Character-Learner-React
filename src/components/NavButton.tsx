@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
 import { darkColor3, darkText } from "../constants";
 import { hexToRGB } from "../utils";
+import { PageContext } from "../App";
 
 const CircleButton = styled.button <{ color?: string, animation?: string, text?: string }>`
     height: 70%;
@@ -59,19 +60,37 @@ const ButtonText = styled.span<{ animation?: string }>`
 `
 
 interface NavButtonProps {
+    id: "profile" | "content" | "settings";
     svg?: React.FC<React.SVGProps<SVGSVGElement>>;
     text?: string;
     color?: string;
     animation?: string;
+    onClick?: () => any;
 }
 
-const NavButton: React.FC<NavButtonProps> = ({ svg: SVGComponent, text, color, animation }: NavButtonProps) => {
-    console.log(color);
+const NavButton: React.FC<NavButtonProps> = ({ id, svg: SVGComponent, text, color, animation, onClick }: NavButtonProps) => {
+    const pageContext = useContext(PageContext);
+    if (!pageContext) return null;
+    const { currentPage, setCurrentPage } = pageContext;
+
+    const handleNavButtonClick = () => {
+        if (id === currentPage) {
+            setCurrentPage("main");
+        }
+        else if (id === "profile") {
+
+        }
+        else {
+            setCurrentPage(id);
+        }
+    }
+
     return (
         <CircleButton
             color={color}
             animation={animation}
             text={text}
+            onClick={handleNavButtonClick}
         >
             {SVGComponent ? (
                 <IconSVG

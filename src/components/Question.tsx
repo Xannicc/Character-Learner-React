@@ -1,7 +1,9 @@
 import styled from "styled-components";
-import { darkColor3, darkText } from "../constants";
+import { animationVariants, darkColor3, darkText } from "../constants";
 import { hexToRGB, useToggleState } from "../utils";
 import Arrow from "./Arrow";
+import { animate, motion } from "framer-motion";
+import { useState } from "react";
 
 const CardContainer = styled.section`
     display: flex;
@@ -11,7 +13,7 @@ const CardContainer = styled.section`
     width: 100vw;
 `
 
-const QuestionContainer = styled.div`
+const QuestionContainer = styled(motion.div)`
     position: absolute;
     display: flex;
     width: min(70vw, 75rem);
@@ -30,33 +32,69 @@ const QuestionContainer = styled.div`
         max-width: 90%;
         max-height: 90%;
     }
-
 `
 
 function Question() {
-    const [isCardVisible, toggleIsCardVisible] = useToggleState(false);
+    // for testing purposes
+    const [question, setQuestion] = useState<string>("QUESTION");
 
-    const handleArrowClick = () => {
+    // for when settings page is completed
+    //const [isArrowVisible, toggleIsArrowVisible] = useToggleState(true);
+    const [isCardVisible, toggleIsCardVisible] = useToggleState(false);
+    const [animationDirection, setAnimationDirection] = useState<"left" | "right">("left");
+
+    const startAnimation = (direction: "left" | "right") => {
+        if (isCardVisible) {
+            return;
+        }
+        setAnimationDirection(direction);
         toggleIsCardVisible();
-        // animation
-        // on animation end do this toggleIsCardVisible()
     };
 
     return (
         <CardContainer>
-            <Arrow direction="left" onClick={handleArrowClick} />
+            <Arrow
+                direction="left"
+                onClick={() => startAnimation("left")}
+                isArrowVisible={true}
+            />
 
-            <QuestionContainer style={{ zIndex: 2 }}>
-                <h1 className="question-text">QUESTION</h1>
+            <QuestionContainer
+                variants={animationVariants}
+                initial={"static"}
+                animate={isCardVisible ? (animationDirection === "left" ? ["left", "bounce"] : "right") : "static"}
+                style={{ zIndex: 2 }}
+                onAnimationComplete={() => {
+                    // next
+                    setQuestion("BEHIND");
+                }
+                }
+                onAnimationStart={() => {
+                    // prev
+                    if (animationDirection === "left") setQuestion("BEHIND");
+                }
+                }
+            >
+                <h1 className="question-text">{question}</h1>
             </QuestionContainer>
 
             {isCardVisible && (
-                <QuestionContainer>
+                <QuestionContainer
+                    variants={animationVariants}
+                    animate={animationDirection === "left" ? "shrink" : "rise"}
+                    onAnimationComplete={() => {
+                        if (isCardVisible) toggleIsCardVisible();
+                    }}
+                >
                     <h1 className="question-text">BEHIND</h1>
                 </QuestionContainer>
             )}
 
-            <Arrow direction="right" onClick={handleArrowClick} />
+            <Arrow
+                direction="right"
+                onClick={() => startAnimation("right")}
+                isArrowVisible={true}
+            />
         </CardContainer >
     )
 }

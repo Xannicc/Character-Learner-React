@@ -1,25 +1,20 @@
 /// <reference types="vite-plugin-svgr/client" />
 
-import styled from "styled-components"
-import Question from "./components/Question"
-import TextInput from "./components/TextInput"
 import NavBar from "./components/NavBar"
-import { useEffect } from "react"
+import { useEffect, useState, createContext } from "react"
 import { darkText, darkColor1, darkColor2, darkColor3, lightText, lightColor1, lightColor2, lightColor3 } from "./constants"
+import MainPage from "./components/MainPage";
+import ContentPage from "./components/ContentPage";
+import SettingsPage from "./components/SettingsPage";
 
-const MainContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5%;
-
-    @media (max-width: 768px) {
-        margin-top: max(10%, 6rem);
-    }
-`
+export const PageContext = createContext<{
+    currentPage: "main" | "content" | "settings";
+    setCurrentPage: React.Dispatch<React.SetStateAction<"main" | "content" | "settings">>;
+} | null>(null);
 
 function App() {
+    const [currentPage, setCurrentPage] = useState<"main" | "content" | "settings">("main");
+
     useEffect(() => {
         // colors
         document.documentElement.style.setProperty("--darkText-color", darkText);
@@ -33,14 +28,21 @@ function App() {
         document.documentElement.style.setProperty("--light3-color", lightColor3);
     }, []);
 
+    const pages = {
+        main: <MainPage />,
+        content: <ContentPage />,
+        settings: <SettingsPage />,
+    }
+
     return (
         <>
-            <NavBar />
+            <PageContext.Provider
+                value={{ currentPage, setCurrentPage }}
+            >
+                <NavBar />
+            </PageContext.Provider>
             <section>
-                <MainContainer>
-                    <Question />
-                    <TextInput />
-                </MainContainer>
+                {pages[currentPage]}
             </section>
         </>
     )

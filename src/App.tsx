@@ -2,18 +2,18 @@
 
 import NavBar from "./components/NavBar"
 import { useEffect, useState, createContext } from "react"
-import { darkText, darkColor1, darkColor2, darkColor3, lightText, lightColor1, lightColor2, lightColor3 } from "./constants"
+import { darkText, darkColor1, darkColor2, darkColor3, lightText, lightColor1, lightColor2, lightColor3, PageType } from "./constants"
 import MainPage from "./components/MainPage";
 import ContentPage from "./components/ContentPage";
 import SettingsPage from "./components/SettingsPage";
 
 export const PageContext = createContext<{
-    currentPage: "main" | "content" | "settings";
-    setCurrentPage: React.Dispatch<React.SetStateAction<"main" | "content" | "settings">>;
+    currentPage: PageType;
+    setCurrentPage: React.Dispatch<React.SetStateAction<PageType>>;
 } | null>(null);
 
 function App() {
-    const [currentPage, setCurrentPage] = useState<"main" | "content" | "settings">("main");
+    const [currentPage, setCurrentPage] = useState<PageType>("main");
 
     useEffect(() => {
         // colors
@@ -30,7 +30,8 @@ function App() {
 
     const pages = {
         main: <MainPage />,
-        content: <ContentPage />,
+        content: <ContentPage setCurrentPage={setCurrentPage} />,
+        popularContent: <></>,
         settings: <SettingsPage />,
     }
 

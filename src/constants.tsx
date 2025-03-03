@@ -9,6 +9,33 @@ export const lightColor1 = "#fafafa"
 export const lightColor2 = "#e4e5f1"
 export const lightColor3 = "#d2d3db"
 
+const pages = [
+    "main",
+    "content",
+    "popularContent",
+    "settings",
+] as const;
+
+export type PageType = (typeof pages)[number];
+
+export interface ContentType {
+    file: File;
+    name: string;
+}
+
+export interface SettingsType {
+
+}
+
+export interface UserType {
+    username: string;
+    email: string;
+    password: string;
+    userContent: [ContentType];
+    favouriteContent: [ContentType];
+    userSettings: SettingsType;
+}
+
 export const animationVariants = {
     static: {
         x: 0,

@@ -65,10 +65,9 @@ interface NavButtonProps {
     text?: string;
     color?: string;
     animation?: string;
-    onClick?: () => any;
 }
 
-const NavButton: React.FC<NavButtonProps> = ({ id, svg: SVGComponent, text, color, animation, onClick }: NavButtonProps) => {
+const NavButton: React.FC<NavButtonProps> = ({ id, svg: SVGComponent, text, color, animation }: NavButtonProps) => {
     const pageContext = useContext(PageContext);
     if (!pageContext) return null;
     const { currentPage, setCurrentPage } = pageContext;

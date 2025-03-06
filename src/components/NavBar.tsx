@@ -4,6 +4,8 @@ import Logo from "./Logo";
 import NavButton from "./NavButton";
 import profileIcon from "../assets/profile-icon.svg?react";
 import cogIcon from "../assets/cog-icon.svg?react";
+import { useContext } from "react";
+import { PageContext } from "../App";
 
 const NavContainer = styled.div`
     position: absolute;
@@ -14,10 +16,17 @@ const NavContainer = styled.div`
     height: 5rem;
     top: 0;
     left: 0;
-    background-color: ${darkColor3}
+    background-color: ${darkColor3};
+    box-shadow: 0 0.5rem 1rem ${darkColor3};
 `
 
 function NavBar() {
+    const pageContext = useContext(PageContext);
+    if (!pageContext) {
+        throw new Error("404");
+    }
+    const { currentPage } = pageContext;
+
     return (
         <NavContainer>
             <NavButton
@@ -33,7 +42,7 @@ function NavBar() {
             />
             <NavButton
                 id="content"
-                text="CONTENT"
+                text={currentPage === "content" ? "RETURN" : "CONTENT"}
                 color={darkText}
             />
             <Logo />

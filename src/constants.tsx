@@ -1,3 +1,5 @@
+import { ContentType } from "./components/GlobalProvider"
+
 export const darkText = "#ffffffde"
 export const darkColor1 = "#3E3E3E"
 export const darkColor2 = "#242424"
@@ -18,22 +20,10 @@ const pages = [
 
 export type PageType = (typeof pages)[number];
 
-export interface ContentType {
-    file: File;
-    name: string;
-}
-
-export interface SettingsType {
-
-}
-
-export interface UserType {
+export interface UserInformation {
     username: string;
     email: string;
     password: string;
-    userContent: [ContentType];
-    favouriteContent: [ContentType];
-    userSettings: SettingsType;
 }
 
 export const animationVariants = {
@@ -100,3 +90,57 @@ export const animationVariants = {
         }
     }
 }
+
+//temp 
+
+export const tempUserContent: ContentType[] = [
+    {
+        name: "Hiragana",
+        content: [
+            ["kana", "kanji", "english"],
+            ["a", "b", "c"],
+            ["e", "f", "g"]
+        ],
+        selected: false,
+        liked: false
+    }, {
+        name: "Katakana",
+        content: [
+            ["kana", "kanji", "english"],
+            ["x", "y", "z"],
+            ["l", "m", "n"]
+        ],
+        selected: false,
+        liked: false
+    }, {
+        name: "Katakana1",
+        content: [
+            ["kana", "kanji", "english"],
+            ["x", "y", "z"],
+            ["l", "m", "n"]
+        ],
+        selected: false,
+        liked: false
+    }];
+
+export const tempPopularContent: ContentType[] = [
+    {
+        name: "Genki",
+        content: [
+            ["kana", "kanji", "english"],
+            ["aj", "byy", "c;d"],
+            ["ehhw", "fj", "gddh"]
+        ],
+        selected: false,
+        liked: false
+    },
+    {
+        name: "Kanji",
+        content: [
+            ["kana", "kanji", "english"],
+            ["sdf", "wewx", "rgpw"],
+            ["lhj", "emf", "qjf"]
+        ],
+        selected: false,
+        liked: false
+    }];

@@ -1,6 +1,13 @@
 @font-face {
     font-family: "onsen-japan";
-    src: url("./assets/fonts/OnsenJapan.ttf") format("truetype");
+    src: url("./assets/fonts/onsen-japan.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "outfit";
+    src: url("./assets/fonts/outfit-medium.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
@@ -16,7 +23,7 @@
     --light3-color: #d2d3db;
     --lightText-color: #484b6a;
 
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: outfit, Arial, Inter, system-ui, Avenir, Helvetica, sans-serif;
     line-height: 1.5;
     font-weight: 400;
 
@@ -34,7 +41,6 @@
 body {
     margin: 0;
     display: flex;
-    
     align-items: center;
     min-width: 320px;
     min-height: 100vh;

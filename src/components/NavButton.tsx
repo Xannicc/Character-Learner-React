@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { darkColor3, darkText } from "../constants";
 import { hexToRGB } from "../utils";
 import { PageContext } from "../App";
+import "../index.css"
 
 const CircleButton = styled.button <{ color?: string, animation?: string, text?: string }>`
     height: 70%;
@@ -41,6 +42,7 @@ const IconSVG = styled.svg`
 `;
 
 const ButtonText = styled.span<{ animation?: string }>`
+    font-family: outfit;
     width: 100%;
     height: 100%;
     border-radius: 0.5rem;
@@ -69,7 +71,10 @@ interface NavButtonProps {
 
 const NavButton: React.FC<NavButtonProps> = ({ id, svg: SVGComponent, text, color, animation }: NavButtonProps) => {
     const pageContext = useContext(PageContext);
-    if (!pageContext) return null;
+    if (!pageContext) {
+        throw new Error("404");
+    }
+
     const { currentPage, setCurrentPage } = pageContext;
 
     const handleNavButtonClick = () => {

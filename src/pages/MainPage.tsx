@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import Question from "./Question"
-import TextInput from "./TextInput"
+import Question from "../components/Question"
+import TextInput from "../components/TextInput"
 
 const MainContainer = styled.div`
     display: flex;

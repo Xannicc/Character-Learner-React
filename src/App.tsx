@@ -3,14 +3,15 @@
 import NavBar from "./components/NavBar"
 import { useEffect, useState, createContext } from "react"
 import { darkText, darkColor1, darkColor2, darkColor3, lightText, lightColor1, lightColor2, lightColor3, PageType } from "./constants"
-import MainPage from "./components/MainPage";
-import ContentPage from "./components/ContentPage";
-import SettingsPage from "./components/SettingsPage";
+import MainPage from "./pages/MainPage";
+import ContentPage from "./pages/ContentPage";
+import SettingsPage from "./pages/SettingsPage";
+import GlobalProvider from "./components/GlobalProvider";
 
 export const PageContext = createContext<{
     currentPage: PageType;
     setCurrentPage: React.Dispatch<React.SetStateAction<PageType>>;
-} | null>(null);
+} | undefined>(undefined);
 
 function App() {
     const [currentPage, setCurrentPage] = useState<PageType>("main");
@@ -36,7 +37,7 @@ function App() {
     }
 
     return (
-        <>
+        <GlobalProvider>
             <PageContext.Provider
                 value={{ currentPage, setCurrentPage }}
             >
@@ -45,7 +46,7 @@ function App() {
             <section>
                 {pages[currentPage]}
             </section>
-        </>
+        </GlobalProvider>
     )
 }
 

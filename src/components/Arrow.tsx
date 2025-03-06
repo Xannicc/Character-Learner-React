@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { darkText } from "../constants";
+import { darkColor3, darkText } from "../constants";
 import { hexToRGB } from "../utils";
 import leftArrowIcon from "../assets/left-arrow-icon.svg?react";
 import rightArrowIcon from "../assets/right-arrow-icon.svg?react";
@@ -31,8 +31,9 @@ const ArrowButton = styled.button<{ direction: string }>`
 `
 
 const ArrowSVG = styled.svg`
-    transition: all 0.2s ease-in-out;
+    transition: all 0.15s ease-in-out;
     height: 100%;
+    filter: drop-shadow(0 0 0.3rem rgba(${hexToRGB(darkText)}, 0.3));
 
     &:hover {
         transform: scale(1.075);

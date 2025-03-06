@@ -22,7 +22,7 @@ const QuestionContainer = styled(motion.div)`
     justify-content: center;
     background-color: ${darkColor3};
     border-radius: 20px;
-    box-shadow: 0px 0px 15px rgba(${hexToRGB(darkText)}, 0.15);
+    box-shadow: 0 0.5rem 1.5rem rgba(${hexToRGB(darkColor3)}, 0.8);
     z-index: 1;
     
     .question-text {

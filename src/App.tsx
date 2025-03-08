@@ -1,13 +1,12 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 import NavBar from "./components/NavBar"
-import { useEffect, useState, createContext } from "react"
-import { darkText, darkColor1, darkColor2, darkColor3, lightText, lightColor1, lightColor2, lightColor3, PageType, darkTheme, lightTheme } from "./constants"
+import { useState, createContext } from "react"
+import { PageType } from "./constants"
 import MainPage from "./pages/MainPage";
 import ContentPage from "./pages/ContentPage";
 import SettingsPage from "./pages/SettingsPage";
 import GlobalProvider from "./components/GlobalProvider";
-import { ThemeProvider } from "styled-components";
 
 export const PageContext = createContext<{
     currentPage: PageType;

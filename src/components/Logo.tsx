@@ -1,11 +1,10 @@
 import styled from "styled-components"
-import { darkColor3 } from "../constants"
 import "../index.css"
 
 const LogoButton = styled.button`
     position: absolute;
     border: none;
-    background-color: ${darkColor3};
+    background-color: ${({ theme }) => theme.color.third};
     left: clamp(10px, 2%, 20px);
     font-size: 170%;
     line-height: 0;

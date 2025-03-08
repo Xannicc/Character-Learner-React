@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { darkColor3, darkText } from "../constants";
-import { hexToRGB } from "../utils";
+import { darkText } from "../constants";
 import leftArrowIcon from "../assets/left-arrow-icon.svg?react";
 import rightArrowIcon from "../assets/right-arrow-icon.svg?react";
 
@@ -18,22 +17,21 @@ const ArrowButton = styled.button<{ direction: string }>`
     background: none;
     transition: all 0.2s ease-in-out;
     border-radius: 1rem;
-    color: ${darkText};
+    color: ${({ theme }) => theme.color.text};
 
     &:hover {
-        background-color: rgba(${hexToRGB(darkText)}, 0.1);
+        background-color: ${({ theme }) => theme.shadow.text[15]};
         cursor: pointer;
     }
 
     &:active {
-        background-color: rgba(${hexToRGB(darkText)}, 0.175);
+        background-color: ${({ theme }) => theme.shadow.text[20]};
     }
 `
 
 const ArrowSVG = styled.svg`
     transition: all 0.15s ease-in-out;
     height: 100%;
-    filter: drop-shadow(0 0 0.3rem rgba(${hexToRGB(darkText)}, 0.3));
 
     &:hover {
         transform: scale(1.075);

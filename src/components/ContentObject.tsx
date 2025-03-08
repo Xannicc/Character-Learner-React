@@ -1,17 +1,24 @@
 import styled from "styled-components";
-import { darkColor3 } from "../constants";
-import { hexToRGB } from "../utils";
 import { ContentType } from "./GlobalProvider";
+import ContentObjectButton from "./ContentObjectButton";
+import binIcon from "../assets/bin-icon.svg?react";
+import thumbIcon from "../assets/thumb-icon.svg?react";
 
 const ObjectContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 18rem;
+    min-width: 18rem;
     height: 12rem;
     border-radius: 2rem;
     margin: 1.5rem;
-    background-color: ${darkColor3};
-    box-shadow: 0 0.3rem 1rem rgba(${hexToRGB(darkColor3)}, 1);
+    background-color: ${({ theme }) => theme.color.third};
+    box-shadow: 0 0.5rem 1rem ${({ theme }) => theme.shadow.third[80]};
+`
+
+const ObjectButtonContainer = styled.div`
+    margin-top: 3.5rem;
+    bottom: 0;
+    width: 100%;
 `
 
 const Title = styled.h1`
@@ -29,6 +36,18 @@ function ContentObject({ name, content, selected, liked }: ContentType) {
             <Title>
                 {name}
             </Title>
+            <ObjectButtonContainer>
+                <ContentObjectButton
+                    SVG={binIcon}
+                    type="delete"
+                    onClick={() => true}
+                />
+                <ContentObjectButton
+                    SVG={thumbIcon}
+                    type="favourite"
+                    onClick={() => true}
+                />
+            </ObjectButtonContainer>
         </ObjectContainer>
     )
 }

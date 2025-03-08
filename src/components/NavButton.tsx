@@ -1,11 +1,10 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import { darkColor3, darkText } from "../constants";
-import { hexToRGB } from "../utils";
 import { PageContext } from "../App";
 import "../index.css"
+import SVGComponent from "./SVGcomponent";
 
-const CircleButton = styled.button <{ color?: string, animation?: string, text?: string }>`
+const CircleButton = styled.button <{ color: string, animation?: string, text?: string }>`
     height: 70%;
     aspect-ratio: 1;
     border-radius: 50%;
@@ -13,15 +12,15 @@ const CircleButton = styled.button <{ color?: string, animation?: string, text?:
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: ${darkColor3};
-    color: ${({ color }) => color || { darkText }};
+    background-color: ${({ theme }) => theme.color.third};
+    color: ${({ color }) => color};
     margin: clamp(10px, 2%, 20px);
     margin-left: 0;
     transition: all 0.2s ease-in-out;
   
     &:hover {
         transform: ${({ animation }) => animation || ""};
-        background-color: ${({ text }) => (text ? "transparent" : `rgba(${hexToRGB(darkText)}, 0.3)`)};
+        background-color: ${({ text }) => (text ? "transparent" : ({ theme }) => theme.shadow.text[30])};
         cursor: pointer;
     }
 
@@ -29,16 +28,6 @@ const CircleButton = styled.button <{ color?: string, animation?: string, text?:
         transform: translateY(3px);
     }
 
-`;
-
-const IconSVG = styled.svg`
-    transform: scale(1.2);
-    transition: all 0.2s ease-in-out;
-    will-change: transform;
-
-    &:hover {
-        transform: scale(1.4);
-    }
 `;
 
 const ButtonText = styled.span<{ animation?: string }>`
@@ -56,7 +45,7 @@ const ButtonText = styled.span<{ animation?: string }>`
     &:hover {
         font-size: 120%;
         transform: ${({ animation }) => animation || ""};
-        background-color: rgba(${hexToRGB(darkText)}, 0.3);
+        background-color: ${({ theme }) => theme.shadow.text[30]};
         cursor: pointer;
     }
 `
@@ -65,11 +54,11 @@ interface NavButtonProps {
     id: "profile" | "content" | "settings";
     svg?: React.FC<React.SVGProps<SVGSVGElement>>;
     text?: string;
-    color?: string;
+    color: string;
     animation?: string;
 }
 
-const NavButton: React.FC<NavButtonProps> = ({ id, svg: SVGComponent, text, color, animation }: NavButtonProps) => {
+const NavButton: React.FC<NavButtonProps> = ({ id, svg, text, color, animation }: NavButtonProps) => {
     const pageContext = useContext(PageContext);
     if (!pageContext) {
         throw new Error("404");
@@ -96,9 +85,9 @@ const NavButton: React.FC<NavButtonProps> = ({ id, svg: SVGComponent, text, colo
             text={text}
             onClick={handleNavButtonClick}
         >
-            {SVGComponent ? (
-                <IconSVG
-                    as={SVGComponent}
+            {svg ? (
+                <SVGComponent
+                    SVG={svg}
                     color={color}
                 />
             ) : (

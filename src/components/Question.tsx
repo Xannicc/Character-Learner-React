@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { animationVariants, darkColor3, darkText } from "../constants";
-import { hexToRGB, useToggleState } from "../utils";
+import { animationVariants } from "../constants";
+import { useToggleState } from "../utils";
 import Arrow from "./Arrow";
-import { animate, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 const CardContainer = styled.section`
@@ -20,12 +20,13 @@ const QuestionContainer = styled(motion.div)`
     height: 50vh;
     place-items: center;
     justify-content: center;
-    background-color: ${darkColor3};
+    background-color: ${({ theme }) => theme.color.third};
     border-radius: 20px;
-    box-shadow: 0 0.5rem 1.5rem rgba(${hexToRGB(darkColor3)}, 0.8);
+    box-shadow: 0 0.5rem 1.5rem ${({ theme }) => theme.shadow.third[80]};
     z-index: 1;
     
     .question-text {
+        color: ${({ theme }) => theme.color.text};
         font-size: clamp(2rem, max(6vw, 4vh), 10rem);
         text-align: center;
         width: fit-content;

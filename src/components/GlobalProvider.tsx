@@ -1,5 +1,7 @@
-import { createContext, ReactNode, useContext } from "react"
-import { tempUserContent } from "../constants";
+import { createContext, ReactNode, useContext, useEffect } from "react"
+import { darkTheme, lightTheme, tempUserContent } from "../constants";
+import { useToggleState } from "../utils";
+import { ThemeProvider } from "styled-components";
 
 export interface ContentType {
     name: string;
@@ -8,13 +10,19 @@ export interface ContentType {
     liked: boolean;
 }
 
-interface SettingsType {
+export interface SettingsType {
     forceKanji: boolean;
+    darkMode: boolean;
+}
+
+interface FunctionsType {
+    toggleDarkMode: (darkMode: boolean) => void;
 }
 
 interface GlobalContextType {
     userContent: ContentType[];
     userSettings: SettingsType;
+    globalFunctions: FunctionsType;
 }
 
 // write into these from backend with first render
@@ -24,17 +32,25 @@ const forceKanji = false;
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 function GlobalProvider({ children }: { children: ReactNode }) {
+    const [darkMode, toggleDarkMode] = useToggleState(true);
+
     return (
-        <GlobalContext.Provider
-            value={{
-                userContent,
-                userSettings: {
-                    forceKanji
-                },
-            }}
-        >
-            {children}
-        </GlobalContext.Provider>
+        <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+            <GlobalContext.Provider
+                value={{
+                    userContent,
+                    userSettings: {
+                        forceKanji,
+                        darkMode,
+                    },
+                    globalFunctions: {
+                        toggleDarkMode
+                    }
+                }}
+            >
+                {children}
+            </GlobalContext.Provider>
+        </ThemeProvider>
     )
 }
 

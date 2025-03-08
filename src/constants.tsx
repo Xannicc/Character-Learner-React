@@ -1,15 +1,51 @@
 import { ContentType } from "./components/GlobalProvider"
 
-export const darkText = "#ffffffde"
-export const darkColor1 = "#3E3E3E"
-export const darkColor2 = "#242424"
-export const darkColor3 = "#121212"
+// temp unused colors
 export const darkColor4 = "#aeacb4"
-
 export const lightText = "#484b6a"
 export const lightColor1 = "#fafafa"
 export const lightColor2 = "#e4e5f1"
 export const lightColor3 = "#d2d3db"
+
+export const darkTheme = {
+    color: {
+        text: "#ffffffde",
+        first: "#3E3E3E",
+        second: "#242424",
+        third: "#121212",
+    },
+    shadow: {
+        text: {
+            10: "#ffffff1a",
+            15: "#ffffff26",
+            20: "#ffffff33",
+            30: "#ffffff4d"
+        },
+        third: {
+            80: "#121212cc",
+        }
+    }
+}
+
+export const lightTheme = {
+    color: {
+        text: "#000000de",
+        first: "#c1c1c1",
+        second: "#dbdbdb",
+        third: "#ededed",
+    },
+    shadow: {
+        text: {
+            10: "#0000001a",
+            15: "#00000026",
+            20: "#00000033",
+            30: "#0000004d"
+        },
+        third: {
+            80: "#edededcc",
+        }
+    }
+}
 
 const pages = [
     "main",
@@ -121,6 +157,15 @@ export const tempUserContent: ContentType[] = [
         ],
         selected: false,
         liked: false
+    }, {
+        name: "Katakana2",
+        content: [
+            ["kana", "kanji", "english"],
+            ["x", "y", "z"],
+            ["l", "m", "n"]
+        ],
+        selected: false,
+        liked: false
     }];
 
 export const tempPopularContent: ContentType[] = [
@@ -140,6 +185,33 @@ export const tempPopularContent: ContentType[] = [
             ["kana", "kanji", "english"],
             ["sdf", "wewx", "rgpw"],
             ["lhj", "emf", "qjf"]
+        ],
+        selected: false,
+        liked: false
+    }, {
+        name: "Katakana1",
+        content: [
+            ["kana", "kanji", "english"],
+            ["x", "y", "z"],
+            ["l", "m", "n"]
+        ],
+        selected: false,
+        liked: false
+    }, {
+        name: "Katakana2",
+        content: [
+            ["kana", "kanji", "english"],
+            ["x", "y", "z"],
+            ["l", "m", "n"]
+        ],
+        selected: false,
+        liked: false
+    }, {
+        name: "Katakana3",
+        content: [
+            ["kana", "kanji", "english"],
+            ["x", "y", "z"],
+            ["l", "m", "n"]
         ],
         selected: false,
         liked: false

@@ -11,6 +11,7 @@ const ContentContainer = styled.div`
     flex-direction: column;
     align-items: left;
     justify-content: center;
+    overflow-y: scroll;
 `
 
 const FileInputContainer = styled.div`
@@ -19,22 +20,22 @@ const FileInputContainer = styled.div`
     height: 4rem;
     width: 4rem;
     border-radius: 50%;
-    background-color: ${darkColor3};
+    background-color: ${({ theme }) => theme.color.third};
     align-items: center;
     justify-content: center;
     right: 2rem;
     top: 2rem;
     transition: all 0.2s ease-in-out;
     font-size: 2rem;
-    box-shadow: 0 0.5rem 1rem rgba(${hexToRGB(darkColor3)}, 0.8);
+    box-shadow: 0 0.5rem 1rem ${({ theme }) => theme.shadow.third[80]};
 
     &:hover {
         font-size: 2.5rem;
-        background-color: rgba(${hexToRGB(darkText)}, 0.15);
+        background-color: ${({ theme }) => theme.shadow.text[15]};
     }
 
     &:active {
-        box-shadow: 0 0rem 1rem rgba(${hexToRGB(darkColor3)}, 0.8);
+        box-shadow: 0 0rem 1rem ${({ theme }) => theme.shadow.third[80]};
         transform: translateY(3px);
     }
 `

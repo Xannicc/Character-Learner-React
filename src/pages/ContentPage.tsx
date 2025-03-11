@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import ContentSections from "../components/ContentSections";
 import { PageType, tempPopularContent, tempUserContent } from "../constants";
-import React from "react";
-import { parseCSV } from "../utils";
+import React, { useEffect } from "react";
+import { parseCSV, useToggleState } from "../utils";
 import { ContentType, useGlobalContext } from "../components/GlobalProvider";
 
 const ContentContainer = styled.div`
@@ -51,6 +51,9 @@ interface ContentProps {
 }
 
 function ContentPage({ setCurrentPage }: ContentProps) {
+    const [showFavourites, toggleShowFavourites] = useToggleState(false);
+    let favouritedContent: ContentType[] = [];
+
     const {
         userContent,
         globalFunctions: { addContent }
@@ -69,7 +72,7 @@ function ContentPage({ setCurrentPage }: ContentProps) {
                     name: file.name.slice(0, -4),
                     content: parsed,
                     selected: false,
-                    liked: false
+                    liked: true
                 });
             }
             catch (error) {
@@ -79,7 +82,6 @@ function ContentPage({ setCurrentPage }: ContentProps) {
     };
 
     // toggle when favourites is not empty
-    const showFavourites = false;
 
     return (
         <ContentContainer>
@@ -96,10 +98,10 @@ function ContentPage({ setCurrentPage }: ContentProps) {
                     onChange={handleAddFile}
                 />
             </FileInputContainer>
-            {showFavourites && (
+            {userContent.filter(content => content.liked === true).length && (
                 <ContentSections
                     name="FAVOURITES"
-                    sectionContent={[]}
+                    sectionContent={userContent.filter(content => content.liked === true)}
                 />
             )}
             <ContentSections

@@ -1,6 +1,11 @@
+import AlertMessage from "../components/AlertMessage";
+
 function SettingsPage() {
     return (
-        <h1>settings</h1>
+        <AlertMessage
+            title={"message"}
+            message={"siubgfsudgbfsudfgbsuyssdfsffgb"}
+        ></AlertMessage>
     )
 }
 

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { darkText } from "../constants";
 import leftArrowIcon from "../assets/left-arrow-icon.svg?react";
 import rightArrowIcon from "../assets/right-arrow-icon.svg?react";
 

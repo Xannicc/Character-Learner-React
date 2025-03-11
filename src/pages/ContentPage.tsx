@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import ContentSections from "../components/ContentSections";
-import { darkColor3, darkText, PageType, tempPopularContent, tempUserContent } from "../constants";
-import { hexToRGB } from "../utils";
+import { PageType, tempPopularContent, tempUserContent } from "../constants";
+import React from "react";
+import { parseCSV } from "../utils";
+import { ContentType, useGlobalContext } from "../components/GlobalProvider";
 
 const ContentContainer = styled.div`
     position: absolute; 
@@ -49,9 +51,32 @@ interface ContentProps {
 }
 
 function ContentPage({ setCurrentPage }: ContentProps) {
-    const handleAddFile = () => {
+    const {
+        userContent,
+        globalFunctions: { addContent }
+    } = useGlobalContext();
 
-    }
+    const handleAddFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (!files || files.length === 0) {
+            return;
+        }
+
+        for (let file of files) {
+            try {
+                const parsed = await parseCSV(file);
+                addContent({
+                    name: file.name.slice(0, -4),
+                    content: parsed,
+                    selected: false,
+                    liked: false
+                });
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+    };
 
     // toggle when favourites is not empty
     const showFavourites = false;
@@ -61,12 +86,14 @@ function ContentPage({ setCurrentPage }: ContentProps) {
             <FileInputContainer>
                 <label
                     htmlFor="file-upload"
-                    onClick={handleAddFile}
                 >
                     +
                 </label>
                 <HiddenFileInput
                     id="file-upload"
+                    accept=".csv"
+                    multiple
+                    onChange={handleAddFile}
                 />
             </FileInputContainer>
             {showFavourites && (
@@ -77,7 +104,7 @@ function ContentPage({ setCurrentPage }: ContentProps) {
             )}
             <ContentSections
                 name="MY CONTENT"
-                sectionContent={tempUserContent}
+                sectionContent={userContent}
             />
             <ContentSections
                 name="POPULAR CONTENT"

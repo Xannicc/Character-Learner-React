@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import Papa from "papaparse";
 
 export function hexToRGB(hex: string) {
     hex = hex.replace(/^#/, "");
@@ -10,7 +11,9 @@ export function hexToRGB(hex: string) {
     const g = (bigint >> 8) & 255;
     const b = bigint & 255;
     return `${r}, ${g}, ${b}`;
-}
+};
+
+export type ToggleType = [boolean, (state: boolean) => void];
 
 export function useToggleState(initialState: boolean) {
     const [state, setState] = useState(initialState);
@@ -20,4 +23,30 @@ export function useToggleState(initialState: boolean) {
     }, []);
 
     return [state, toggle] as const;
-}
+};
+
+export const parseCSV = (file: File): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        if (file && file.type === "text/csv") {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                const csvText = reader.result as string;
+                const result = Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                });
+                resolve(result.data);
+            };
+
+            reader.onerror = () => {
+                reject(new Error("Error reading file"));
+            };
+
+            reader.readAsText(file);
+        }
+        else {
+            reject(new Error("Please upload a CSV file."));
+        }
+    });
+};

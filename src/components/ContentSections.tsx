@@ -48,10 +48,10 @@ interface ContentProps {
 
 function ContentSections({ name, onClick, sectionContent }: ContentProps) {
     const contentObjects = sectionContent.map((object) => {
-        console.log(object.name);
         return (
             <ContentObject
                 key={object.name}
+                section={name}
                 name={object.name}
                 content={object.content}
                 selected={object.selected}

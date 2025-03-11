@@ -30,22 +30,34 @@ const Title = styled.h1`
     text-overflow: ellipsis;
 `
 
-function ContentObject({ name, content, selected, liked }: ContentType) {
+interface ContentSectionProps extends ContentType {
+    section: string
+
+}
+
+function ContentObject({ section, name, content, selected, liked }: ContentSectionProps) {
+    const handleFavourite = () => {
+
+    };
+
     return (
         <ObjectContainer>
             <Title>
                 {name}
             </Title>
             <ObjectButtonContainer>
-                <ContentObjectButton
-                    SVG={binIcon}
-                    type="delete"
-                    onClick={() => true}
-                />
+                {section === "MY CONTENT" && (
+                    <ContentObjectButton
+                        SVG={binIcon}
+                        type="delete"
+                        onClick={() => true}
+                    />
+                )}
                 <ContentObjectButton
                     SVG={thumbIcon}
                     type="favourite"
-                    onClick={() => true}
+                    onClick={handleFavourite}
+                    liked={liked}
                 />
             </ObjectButtonContainer>
         </ObjectContainer>

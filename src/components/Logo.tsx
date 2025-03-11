@@ -11,14 +11,18 @@ const LogoButton = styled.button`
     font-family: "onsen-japan";
     padding-top: 10px;
     transition: all 0.2s ease-in-out;
+    width: 4rem;
+    aspect-ratio: 1;
+    text-align: center;
 
     &:hover {
         opacity: 75%;
         cursor: pointer;
+        transform: scale(1.2);
     }
 
     &:active {
-        transform: translateY(2px);
+        transform: translateY(3px) scale(1.2);
     }
 `
 

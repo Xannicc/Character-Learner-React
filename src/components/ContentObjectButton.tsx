@@ -26,9 +26,10 @@ interface ContentObjectButtonProps {
     SVG?: React.FC<React.SVGProps<SVGSVGElement>>
     type: "delete" | "favourite"
     onClick: () => void
+    liked?: boolean
 }
 
-const ContentObjectButton: React.FC<ContentObjectButtonProps> = ({ SVG, type, onClick }: ContentObjectButtonProps) => {
+const ContentObjectButton: React.FC<ContentObjectButtonProps> = ({ SVG, type, onClick, liked }: ContentObjectButtonProps) => {
     const theme = useTheme();
 
     return (
@@ -37,7 +38,8 @@ const ContentObjectButton: React.FC<ContentObjectButtonProps> = ({ SVG, type, on
         >
             <SVGComponent
                 SVG={SVG}
-                color={theme.color.text}
+                color={liked ? "yellow" : theme.color.text}
+                animation={type === "favourite" ? "translateY(5px) translateX(-2px) rotate(15deg)" : ""}
             />
         </CircleButton>
     )

@@ -20,12 +20,19 @@ interface FunctionsType {
     removeContent: (name: string) => void;
     sortContent: (compareFn: (a: ContentType, b: ContentType) => number) => void;
     updateContent: (content: ContentType) => void;
+    toggleLiked: (name: string) => void;
+    /*
+        addFavourite: (content: ContentType) => void;
+        removeFavourite: (name: string) => void;
+        sortFavourites: (compareFn: (a: ContentType, b: ContentType) => number) => void;
+    */
     toggleDarkMode: (darkMode: boolean) => void;
     toggleForceKanji: (toggleForceKanji: boolean) => void;
 }
 
 interface GlobalContextType {
     userContent: ContentType[];
+    //favouriteContent: ContentType[];
     userSettings: SettingsType;
     globalFunctions: FunctionsType;
 }
@@ -35,7 +42,7 @@ type Action =
     | { type: "REMOVE_CONTENT"; payload: string }
     | { type: "SORT_CONTENT"; payload: (a: ContentType, b: ContentType) => number }
     | { type: "UPDATE_CONTENT"; payload: ContentType }
-    | { type: "ADD_TO_FAVOURITE"; payload: { content: ContentType, userFavourite: ContentType[] } };
+    | { type: "TOGGLE_LIKED"; payload: string };
 
 const userContentReducer = (state: ContentType[], action: Action): ContentType[] => {
     switch (action.type) {
@@ -56,11 +63,36 @@ const userContentReducer = (state: ContentType[], action: Action): ContentType[]
                 content.name === action.payload.name ? { ...content, ...action.payload } : content
             );
 
+        case "TOGGLE_LIKED":
+            return state.map(content =>
+                content.name === action.payload ? { ...content, liked: !content.liked } : content
+            );
+
         default:
             throw new Error("Unknown action type");
     }
 };
 
+/* 
+const userFavouriteReducer = (state: ContentType[], action: Action): ContentType[] => {
+    switch (action.type) {
+        case "ADD_CONTENT":
+            if (state.filter(content => content.name === action.payload.name).length > 0) {
+                return state;
+            }
+            return [...state, action.payload];
+
+        case "REMOVE_CONTENT":
+            return state.filter(content => content.name !== action.payload);
+
+        case "SORT_CONTENT":
+            return [...state].sort(action.payload);
+
+        default:
+            throw new Error("Unknown action type");
+    }
+};
+*/
 // write into these from backend with first render
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -69,30 +101,61 @@ function GlobalProvider({ children }: { children: ReactNode }) {
     const [darkMode, toggleDarkMode] = useToggleState(true);
     const [forceKanji, toggleForceKanji] = useToggleState(false);
 
-    const [userContent, dispatch] = useReducer(userContentReducer, []);
-    // const [userFavourite, ] = useState(userContentReducer, []);
+    const [userContent, contentDispatch] = useReducer(userContentReducer, []);
+    //const [favouriteContent, favouriteDispatch] = useReducer(userFavouriteReducer, []);
 
     const addContent = (content: ContentType) => {
-        dispatch({ type: "ADD_CONTENT", payload: content });
+        contentDispatch({ type: "ADD_CONTENT", payload: content });
     };
 
     const removeContent = (name: string) => {
-        dispatch({ type: "REMOVE_CONTENT", payload: name });
+        contentDispatch({ type: "REMOVE_CONTENT", payload: name });
     };
 
     const sortContent = (compareFn: (a: ContentType, b: ContentType) => number) => {
-        dispatch({ type: "SORT_CONTENT", payload: compareFn });
+        contentDispatch({ type: "SORT_CONTENT", payload: compareFn });
     };
 
     const updateContent = (content: ContentType) => {
-        dispatch({ type: "UPDATE_CONTENT", payload: content });
+        contentDispatch({ type: "UPDATE_CONTENT", payload: content });
     };
+
+    const toggleLiked = (name: string) => {
+        contentDispatch({ type: "TOGGLE_LIKED", payload: name });
+    };
+
+    /*
+    const addFavourite = (content: ContentType) => {
+        favouriteDispatch({ type: "ADD_CONTENT", payload: content });
+    };
+
+    const removeFavourite = (name: string) => {
+        favouriteDispatch({ type: "REMOVE_CONTENT", payload: name });
+    };
+
+    const sortFavourites = (compareFn: (a: ContentType, b: ContentType) => number) => {
+        favouriteDispatch({ type: "SORT_CONTENT", payload: compareFn });
+    };
+    */
+
+    // first render
+
+    useEffect(() => {
+        /*
+        userContent.map((content) => {
+            if (content.liked === true) {
+                addFavourite(content);
+            }
+        });
+        */
+    }, []);
 
     return (
         <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
             <GlobalContext.Provider
                 value={{
                     userContent,
+                    //favouriteContent,
                     userSettings: {
                         darkMode,
                         forceKanji,
@@ -102,6 +165,10 @@ function GlobalProvider({ children }: { children: ReactNode }) {
                         removeContent,
                         sortContent,
                         updateContent,
+                        toggleLiked,
+                        //addFavourite,
+                        //removeFavourite,
+                        //sortFavourites,
                         toggleDarkMode,
                         toggleForceKanji,
                     }

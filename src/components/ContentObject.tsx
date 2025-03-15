@@ -46,25 +46,22 @@ interface ContentSectionProps extends ContentType {
 }
 
 function ContentObject({ section, name, content, selected, liked }: ContentSectionProps) {
+    //console.log("rendered Content Object", name);
     const {
         userContent,
-        globalFunctions: { updateContent }
+        globalFunctions: {
+            updateContent,
+            removeContent,
+            toggleLiked,
+        }
     } = useGlobalContext();
-
-    const [localLiked, toggleLocalLiked] = useToggleState(liked);
 
     const handleDelete = () => {
     };
 
     const handleFavourite = () => {
-        toggleLocalLiked();
-        updateContent({
-            name,
-            content,
-            selected,
-            liked: localLiked
-        });
-        //console.log(userContent);
+        toggleLiked(name);
+        console.log(userContent);
     };
 
     return (
@@ -84,7 +81,7 @@ function ContentObject({ section, name, content, selected, liked }: ContentSecti
                     SVG={thumbIcon}
                     type="favourite"
                     onClick={handleFavourite}
-                    liked={localLiked}
+                    liked={liked}
                 />
             </ObjectButtonContainer>
         </ObjectContainer>

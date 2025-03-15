@@ -96,7 +96,7 @@ function ContentPage({ setCurrentPage }: ContentProps) {
                     onChange={handleAddFile}
                 />
             </FileInputContainer>
-            {userContent.filter(content => content.liked === true).length && (
+            {!!userContent.filter(content => content.liked === true).length && (
                 <ContentSections
                     name="FAVOURITES"
                     sectionContent={userContent.filter(content => content.liked === true)}

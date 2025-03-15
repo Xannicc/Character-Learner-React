@@ -25,7 +25,7 @@ const SectionTitle = styled.h1`
     }
 
     &:active {
-        transform: translateY(2px);
+        transform: translateY(0.2em);
     }
 `
 

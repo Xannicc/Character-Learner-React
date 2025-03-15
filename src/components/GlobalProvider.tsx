@@ -6,8 +6,8 @@ import { ThemeProvider } from "styled-components";
 export interface ContentType {
     name: string;
     content: any[];
-    selected?: boolean;
-    liked?: boolean;
+    selected: boolean;
+    liked: boolean;
 }
 
 export interface SettingsType {
@@ -19,6 +19,7 @@ interface FunctionsType {
     addContent: (content: ContentType) => void;
     removeContent: (name: string) => void;
     sortContent: (compareFn: (a: ContentType, b: ContentType) => number) => void;
+    updateContent: (content: ContentType) => void;
     toggleDarkMode: (darkMode: boolean) => void;
     toggleForceKanji: (toggleForceKanji: boolean) => void;
 }
@@ -32,7 +33,9 @@ interface GlobalContextType {
 type Action =
     | { type: "ADD_CONTENT"; payload: ContentType }
     | { type: "REMOVE_CONTENT"; payload: string }
-    | { type: "SORT_CONTENT"; payload: (a: ContentType, b: ContentType) => number };
+    | { type: "SORT_CONTENT"; payload: (a: ContentType, b: ContentType) => number }
+    | { type: "UPDATE_CONTENT"; payload: ContentType }
+    | { type: "ADD_TO_FAVOURITE"; payload: { content: ContentType, userFavourite: ContentType[] } };
 
 const userContentReducer = (state: ContentType[], action: Action): ContentType[] => {
     switch (action.type) {
@@ -41,10 +44,18 @@ const userContentReducer = (state: ContentType[], action: Action): ContentType[]
                 return state;
             }
             return [...state, action.payload];
+
         case "REMOVE_CONTENT":
             return state.filter(content => content.name !== action.payload);
+
         case "SORT_CONTENT":
             return [...state].sort(action.payload);
+
+        case "UPDATE_CONTENT":
+            return state.map(content =>
+                content.name === action.payload.name ? { ...content, ...action.payload } : content
+            );
+
         default:
             throw new Error("Unknown action type");
     }
@@ -59,6 +70,7 @@ function GlobalProvider({ children }: { children: ReactNode }) {
     const [forceKanji, toggleForceKanji] = useToggleState(false);
 
     const [userContent, dispatch] = useReducer(userContentReducer, []);
+    // const [userFavourite, ] = useState(userContentReducer, []);
 
     const addContent = (content: ContentType) => {
         dispatch({ type: "ADD_CONTENT", payload: content });
@@ -70,6 +82,10 @@ function GlobalProvider({ children }: { children: ReactNode }) {
 
     const sortContent = (compareFn: (a: ContentType, b: ContentType) => number) => {
         dispatch({ type: "SORT_CONTENT", payload: compareFn });
+    };
+
+    const updateContent = (content: ContentType) => {
+        dispatch({ type: "UPDATE_CONTENT", payload: content });
     };
 
     return (
@@ -85,6 +101,7 @@ function GlobalProvider({ children }: { children: ReactNode }) {
                         addContent,
                         removeContent,
                         sortContent,
+                        updateContent,
                         toggleDarkMode,
                         toggleForceKanji,
                     }

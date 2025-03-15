@@ -7,7 +7,7 @@ import SVGComponent from "./SVGcomponent";
 const CircleButton = styled.button <{ color: string, animation?: string, text?: string }>`
     height: 70%;
     aspect-ratio: 1;
-    border-radius: 50%;
+    border-radius: ${({ text }) => text ? "0%" : "50%"};
     border: none;
     display: flex;
     justify-content: center;
@@ -25,7 +25,7 @@ const CircleButton = styled.button <{ color: string, animation?: string, text?: 
     }
 
     &:active {
-        transform: translateY(3px);
+        transform: translateY(0.3em);
     }
 
 `;
@@ -37,10 +37,9 @@ const ButtonText = styled.span<{ animation?: string }>`
     border-radius: 0.5rem;
     display: flex;
     align-items: center;
-    padding: 0 10% 0 10%;
+    padding: 0 15%;
     transition: all 0.2s ease-in-out;
     font-size: 110%;
-    margin-right: 1rem;
 
     &:hover {
         font-size: 120%;

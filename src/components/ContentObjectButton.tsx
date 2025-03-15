@@ -16,7 +16,7 @@ const CircleButton = styled.button`
     }
 
     &:active {
-        transform: translateY(3px);
+        transform: translateY(0.3em);
     }
 `
 //  background-color: rgba(${hexToRGB("#ff0000")}, 0.3);
@@ -25,7 +25,7 @@ const CircleButton = styled.button`
 interface ContentObjectButtonProps {
     SVG?: React.FC<React.SVGProps<SVGSVGElement>>
     type: "delete" | "favourite"
-    onClick: () => void
+    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     liked?: boolean
 }
 
@@ -39,7 +39,7 @@ const ContentObjectButton: React.FC<ContentObjectButtonProps> = ({ SVG, type, on
             <SVGComponent
                 SVG={SVG}
                 color={liked ? "yellow" : theme.color.text}
-                animation={type === "favourite" ? "translateY(5px) translateX(-2px) rotate(15deg)" : ""}
+                animation={type === "favourite" ? "translateY(0.5em) translateX(-0.2em) rotate(15deg)" : ""}
             />
         </CircleButton>
     )

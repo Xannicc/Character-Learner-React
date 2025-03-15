@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { ContentType } from "./GlobalProvider";
+import { ContentType, useGlobalContext } from "./GlobalProvider";
 import ContentObjectButton from "./ContentObjectButton";
 import binIcon from "../assets/bin-icon.svg?react";
 import thumbIcon from "../assets/thumb-icon.svg?react";
+import { useToggleState } from "../utils";
 
 const ObjectContainer = styled.div`
     display: flex;
@@ -13,6 +14,16 @@ const ObjectContainer = styled.div`
     margin: 1.5rem;
     background-color: ${({ theme }) => theme.color.third};
     box-shadow: 0 0.5rem 1rem ${({ theme }) => theme.shadow.third[80]};
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+        background-color: ${({ theme }) => theme.shadow.text[10]};
+    }
+
+    &:active {
+        transform: translateY(0.5em) scale(0.95);
+    }
 `
 
 const ObjectButtonContainer = styled.div`
@@ -32,12 +43,28 @@ const Title = styled.h1`
 
 interface ContentSectionProps extends ContentType {
     section: string
-
 }
 
 function ContentObject({ section, name, content, selected, liked }: ContentSectionProps) {
-    const handleFavourite = () => {
+    const {
+        userContent,
+        globalFunctions: { updateContent }
+    } = useGlobalContext();
 
+    const [localLiked, toggleLocalLiked] = useToggleState(liked);
+
+    const handleDelete = () => {
+    };
+
+    const handleFavourite = () => {
+        toggleLocalLiked();
+        updateContent({
+            name,
+            content,
+            selected,
+            liked: localLiked
+        });
+        //console.log(userContent);
     };
 
     return (
@@ -50,14 +77,14 @@ function ContentObject({ section, name, content, selected, liked }: ContentSecti
                     <ContentObjectButton
                         SVG={binIcon}
                         type="delete"
-                        onClick={() => true}
+                        onClick={handleDelete}
                     />
                 )}
                 <ContentObjectButton
                     SVG={thumbIcon}
                     type="favourite"
                     onClick={handleFavourite}
-                    liked={liked}
+                    liked={localLiked}
                 />
             </ObjectButtonContainer>
         </ObjectContainer>

@@ -4,7 +4,7 @@ const InputBox = styled.input`
     height: 4rem;
     max-width: 70vw;
     font-size: 3rem;
-    border-radius: 15px;
+    border-radius: 0.5em;
     border: 0;
     color: ${({ theme }) => theme.color.text};
     background-color: ${({ theme }) => theme.color.third};

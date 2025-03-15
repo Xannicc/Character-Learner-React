@@ -38,7 +38,7 @@ const FileInputContainer = styled.div`
 
     &:active {
         box-shadow: 0 0rem 1rem ${({ theme }) => theme.shadow.third[80]};
-        transform: translateY(3px);
+        transform: translateY(0.1em);
     }
 `
 
@@ -51,9 +51,6 @@ interface ContentProps {
 }
 
 function ContentPage({ setCurrentPage }: ContentProps) {
-    const [showFavourites, toggleShowFavourites] = useToggleState(false);
-    let favouritedContent: ContentType[] = [];
-
     const {
         userContent,
         globalFunctions: { addContent }
@@ -68,11 +65,12 @@ function ContentPage({ setCurrentPage }: ContentProps) {
         for (let file of files) {
             try {
                 const parsed = await parseCSV(file);
+
                 addContent({
                     name: file.name.slice(0, -4),
                     content: parsed,
                     selected: false,
-                    liked: true
+                    liked: false
                 });
             }
             catch (error) {

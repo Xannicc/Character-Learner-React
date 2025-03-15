@@ -21,7 +21,7 @@ const QuestionContainer = styled(motion.div)`
     place-items: center;
     justify-content: center;
     background-color: ${({ theme }) => theme.color.third};
-    border-radius: 20px;
+    border-radius: 2em;
     box-shadow: 0 0.5rem 1.5rem ${({ theme }) => theme.shadow.third[80]};
     z-index: 1;
     

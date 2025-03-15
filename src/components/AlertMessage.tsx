@@ -67,7 +67,7 @@ const MessageButton = styled.button`
     }
 
     &:active {
-        transform: translateY(3px);
+        transform: translateY(0.2em);
     }
     
 `

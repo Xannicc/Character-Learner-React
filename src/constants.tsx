@@ -13,16 +13,20 @@ export const darkTheme = {
         first: "#3E3E3E",
         second: "#242424",
         third: "#121212",
+        accent: "#966fd6",
     },
     shadow: {
         text: {
             10: "#ffffff1a",
             15: "#ffffff26",
             20: "#ffffff33",
-            30: "#ffffff4d"
+            30: "#ffffff4d",
         },
         third: {
             80: "#121212cc",
+        },
+        accent: {
+            70: "#966fd6b3",
         }
     }
 }
@@ -33,6 +37,7 @@ export const lightTheme = {
         first: "#c1c1c1",
         second: "#dbdbdb",
         third: "#ededed",
+        accent: "#966fd6",
     },
     shadow: {
         text: {
@@ -43,6 +48,9 @@ export const lightTheme = {
         },
         third: {
             80: "#edededcc",
+        },
+        accent: {
+            70: "#966fd6b3",
         }
     }
 }
@@ -128,7 +136,7 @@ export const animationVariants = {
 }
 
 //temp 
-
+/*
 export const tempUserContent: ContentType[] = [
     {
         name: "Hiragana",
@@ -216,3 +224,4 @@ export const tempPopularContent: ContentType[] = [
         selected: false,
         liked: false
     }];
+    */

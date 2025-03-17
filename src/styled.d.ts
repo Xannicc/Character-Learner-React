@@ -7,6 +7,7 @@ declare module "styled-components" {
             first: string;
             second: string;
             third: string;
+            accent: string;
         };
         shadow: {
             text: {
@@ -17,7 +18,12 @@ declare module "styled-components" {
             },
             third: {
                 80: string,
+            },
+            accent: {
+                70: string,
             }
         }
     }
 }
+
+declare module 'react-transition-group';

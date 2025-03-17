@@ -1,6 +1,8 @@
-import styled from "styled-components";
-import ContentObject from "./ContentObject";
-import { ContentType } from "./GlobalProvider";
+import React, { useRef } from 'react';
+import styled from 'styled-components';
+import ContentObject from './ContentObject';
+import { ContentType } from './GlobalProvider';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const SectionContainer = styled.section`
     display: flex;
@@ -8,7 +10,7 @@ const SectionContainer = styled.section`
     margin-left: 1rem;
     margin-bottom: 1rem;
     max-width: 100%;
-`
+`;
 
 const SectionTitle = styled.h1`
     position: absolute;
@@ -27,51 +29,62 @@ const SectionTitle = styled.h1`
     &:active {
         transform: translateY(0.2em);
     }
-`
+`;
 
 const ContentBody = styled.div`
     display: flex;
-    width: 100%; 
+    width: 100%;
     flex-wrap: wrap;
 
     @media (max-width: 768px) {
         flex-wrap: nowrap;
         overflow-x: scroll;
     }
-`
+`;
 
 interface ContentProps {
-    name: string
+    name: string;
     onClick?: () => void;
     sectionContent: ContentType[];
 }
 
 function ContentSections({ name, onClick, sectionContent }: ContentProps) {
-    const contentObjects = sectionContent.map((object) => {
-        return (
-            <ContentObject
-                key={object.name}
-                section={name}
-                name={object.name}
-                content={object.content}
-                selected={object.selected}
-                liked={object.liked}
-            />
-        )
-    });
+    const nodeRefs = useRef(new Map<string, React.RefObject<HTMLDivElement | null>>());
 
     return (
         <SectionContainer>
-            <SectionTitle
-                onClick={onClick}
-            >
-                {name}
-            </SectionTitle>
+            <SectionTitle onClick={onClick}>{name}</SectionTitle>
             <ContentBody>
-                {contentObjects}
+                <TransitionGroup component={null}>
+                    {sectionContent.map((object) => {
+                        if (!nodeRefs.current.has(object.name)) {
+                            nodeRefs.current.set(object.name, React.createRef<HTMLDivElement>());
+                        }
+                        const nodeRef = nodeRefs.current.get(object.name)!;
+                        console.log(nodeRef);
+                        return (
+                            <CSSTransition
+                                key={object.name}
+                                nodeRef={nodeRef}
+                                timeout={300}
+                                classNames="content-object"
+                            >
+                                <div ref={nodeRef}>
+                                    <ContentObject
+                                        section={name}
+                                        name={object.name}
+                                        content={object.content}
+                                        selected={object.selected}
+                                        liked={object.liked}
+                                    />
+                                </div>
+                            </CSSTransition>
+                        );
+                    })}
+                </TransitionGroup>
             </ContentBody>
         </SectionContainer>
-    )
+    );
 }
 
 export default ContentSections;

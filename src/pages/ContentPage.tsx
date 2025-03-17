@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import ContentSections from "../components/ContentSections";
-import { PageType, tempPopularContent, tempUserContent } from "../constants";
+import { PageType } from "../constants";
 import React, { useEffect } from "react";
 import { parseCSV, useToggleState } from "../utils";
 import { ContentType, useGlobalContext } from "../components/GlobalProvider";
@@ -65,7 +65,6 @@ function ContentPage({ setCurrentPage }: ContentProps) {
         for (let file of files) {
             try {
                 const parsed = await parseCSV(file);
-
                 addContent({
                     name: file.name.slice(0, -4),
                     content: parsed,
@@ -78,8 +77,6 @@ function ContentPage({ setCurrentPage }: ContentProps) {
             }
         }
     };
-
-    // toggle when favourites is not empty
 
     return (
         <ContentContainer>
@@ -96,12 +93,11 @@ function ContentPage({ setCurrentPage }: ContentProps) {
                     onChange={handleAddFile}
                 />
             </FileInputContainer>
-            {!!userContent.filter(content => content.liked === true).length && (
-                <ContentSections
-                    name="FAVOURITES"
-                    sectionContent={userContent.filter(content => content.liked === true)}
-                />
-            )}
+
+            <ContentSections
+                name="FAVOURITES"
+                sectionContent={userContent.filter(content => content.liked === true)}
+            />
             <ContentSections
                 name="MY CONTENT"
                 sectionContent={userContent}
@@ -109,7 +105,7 @@ function ContentPage({ setCurrentPage }: ContentProps) {
             <ContentSections
                 name="POPULAR CONTENT"
                 onClick={() => setCurrentPage("popularContent")}
-                sectionContent={tempPopularContent}
+                sectionContent={[]}
             />
         </ContentContainer>
     )

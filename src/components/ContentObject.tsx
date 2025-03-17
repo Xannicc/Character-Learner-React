@@ -3,22 +3,21 @@ import { ContentType, useGlobalContext } from "./GlobalProvider";
 import ContentObjectButton from "./ContentObjectButton";
 import binIcon from "../assets/bin-icon.svg?react";
 import thumbIcon from "../assets/thumb-icon.svg?react";
-import { useToggleState } from "../utils";
 
-const ObjectContainer = styled.div`
+const ObjectContainer = styled.div<{ selected: boolean }>`
     display: flex;
     flex-direction: column;
     min-width: 18rem;
     height: 12rem;
     border-radius: 2rem;
     margin: 1.5rem;
-    background-color: ${({ theme }) => theme.color.third};
+    background-color: ${({ theme, selected }) => selected ? theme.shadow.accent[70] : theme.color.third};
     box-shadow: 0 0.5rem 1rem ${({ theme }) => theme.shadow.third[80]};
     transition: all 0.2s ease-in-out;
 
     &:hover {
         transform: scale(1.1);
-        background-color: ${({ theme }) => theme.shadow.text[10]};
+        background-color: ${({ theme, selected }) => selected ? theme.color.accent : theme.shadow.text[10]};
     }
 
     &:active {
@@ -51,21 +50,37 @@ function ContentObject({ section, name, content, selected, liked }: ContentSecti
         userContent,
         globalFunctions: {
             updateContent,
-            removeContent,
-            toggleLiked,
         }
     } = useGlobalContext();
 
     const handleDelete = () => {
     };
 
-    const handleFavourite = () => {
-        toggleLiked(name);
-        console.log(userContent);
+    const handleFavourite = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        updateContent({
+            name: name,
+            content: content,
+            selected: selected,
+            liked: !liked,
+        });
+    };
+
+    const handleSelect = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation();
+        updateContent({
+            name: name,
+            content: content,
+            selected: !selected,
+            liked: liked,
+        });
     };
 
     return (
-        <ObjectContainer>
+        <ObjectContainer
+            selected={selected}
+            onClick={handleSelect}
+        >
             <Title>
                 {name}
             </Title>

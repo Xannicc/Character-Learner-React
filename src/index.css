@@ -33,6 +33,25 @@
     overflow-x: hidden;
 }
 
+.content-object-enter {
+    transform: scaleX(0);
+}
+
+.content-object-enter-active {
+    transform: scaleX(1);
+    transition: transform 200ms ease-in-out;
+}
+
+.content-object-exit {
+    transform: scaleX(1);
+}
+
+.content-object-exit-active {
+    transform: scaleX(0);
+    transition: transform 200ms ease-in-out;
+}
+
+
 body {
     margin: 0;
     display: flex;

@@ -1,5 +1,3 @@
-import { ContentType } from "./components/GlobalProvider"
-
 // temp unused colors
 export const darkColor4 = "#aeacb4"
 export const lightText = "#484b6a"

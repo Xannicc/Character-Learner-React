@@ -7,7 +7,7 @@ import thumbIcon from "../assets/thumb-icon.svg?react";
 const ObjectContainer = styled.div<{ selected: boolean }>`
     display: flex;
     flex-direction: column;
-    min-width: 18rem;
+    width: 18rem;
     height: 12rem;
     border-radius: 2rem;
     margin: 1.5rem;

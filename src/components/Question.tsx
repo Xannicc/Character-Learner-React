@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { animationVariants } from "../constants";
-import { useToggleState } from "../utils";
+import { generateNum, useToggleState } from "../utils";
 import Arrow from "./Arrow";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ContentType } from "./GlobalProvider";
 
 const CardContainer = styled.section`
     display: flex;
@@ -35,9 +36,14 @@ const QuestionContainer = styled(motion.div)`
     }
 `
 
-function Question() {
-    // for testing purposes
-    const [question, setQuestion] = useState<string>("QUESTION");
+interface QuestionProps {
+    content: any[];
+    num: number | undefined;
+    setNum: (num: number) => void;
+    inputValue: string | undefined;
+}
+
+function Question({ content, num, setNum, inputValue }: QuestionProps) {
 
     // for when settings page is completed
     //const [isArrowVisible, toggleIsArrowVisible] = useToggleState(true);
@@ -51,6 +57,20 @@ function Question() {
         setAnimationDirection(direction);
         toggleIsCardVisible();
     };
+
+    useEffect(() => {
+        if (num === undefined) {
+            setNum(generateNum(num, content.length));
+        } else {
+            if (inputValue?.toLowerCase() === content[num].English) {
+                startAnimation("right");
+                setNum(generateNum(num, content.length));
+            }
+        }
+        console.log(content, num);
+    }, [content, num, inputValue]);
+
+
 
     return (
         <CardContainer>
@@ -67,16 +87,15 @@ function Question() {
                 style={{ zIndex: 2 }}
                 onAnimationComplete={() => {
                     // next
-                    setQuestion("BEHIND");
-                }
-                }
+                }}
                 onAnimationStart={() => {
                     // prev
-                    if (animationDirection === "left") setQuestion("BEHIND");
-                }
-                }
+                    if (animationDirection === "left") {
+
+                    }
+                }}
             >
-                <h1 className="question-text">{question}</h1>
+                <h1 className="question-text">{num !== undefined ? /*content[num] */ "" : ""}</h1>
             </QuestionContainer>
 
             {isCardVisible && (

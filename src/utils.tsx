@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import Papa from "papaparse";
+import { ContentType, useGlobalContext } from "./components/GlobalProvider";
 
 export function hexToRGB(hex: string) {
     hex = hex.replace(/^#/, "");
@@ -49,4 +50,15 @@ export const parseCSV = (file: File): Promise<any> => {
             reject(new Error("Please upload a CSV file."));
         }
     });
+};
+
+export const generateNum = (num: number | undefined, max: number) => {
+    if (num === undefined) {
+        return Math.floor(Math.random() * max);
+    }
+    let nextNum = Math.floor(Math.random() * max);
+    while (nextNum === num) {
+        nextNum = Math.floor(Math.random() * max);
+    }
+    return nextNum;
 };

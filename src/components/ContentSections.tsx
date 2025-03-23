@@ -61,12 +61,12 @@ function ContentSections({ name, onClick, sectionContent }: ContentProps) {
                             nodeRefs.current.set(object.name, React.createRef<HTMLDivElement>());
                         }
                         const nodeRef = nodeRefs.current.get(object.name)!;
-                        console.log(nodeRef);
+
                         return (
                             <CSSTransition
                                 key={object.name}
                                 nodeRef={nodeRef}
-                                timeout={300}
+                                timeout={100}
                                 classNames="content-object"
                             >
                                 <div ref={nodeRef}>

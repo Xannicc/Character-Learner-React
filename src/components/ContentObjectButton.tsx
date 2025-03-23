@@ -19,8 +19,6 @@ const CircleButton = styled.button`
         transform: translateY(0.3em);
     }
 `
-//  background-color: rgba(${hexToRGB("#ff0000")}, 0.3);
-
 
 interface ContentObjectButtonProps {
     SVG?: React.FC<React.SVGProps<SVGSVGElement>>

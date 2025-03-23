@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { PageContext } from "../App";
 import "../index.css"
 import SVGComponent from "./SVGcomponent";
+import { useGlobalContext } from "./GlobalProvider";
 
 const CircleButton = styled.button <{ color: string, animation?: string, text?: string }>`
     height: 70%;

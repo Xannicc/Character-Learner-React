@@ -1,4 +1,3 @@
-/// <reference types="vite-plugin-svgr/client" />
 
 import NavBar from "./components/NavBar"
 import { useState, createContext } from "react"

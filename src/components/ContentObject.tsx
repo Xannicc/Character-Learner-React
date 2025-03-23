@@ -45,15 +45,17 @@ interface ContentSectionProps extends ContentType {
 }
 
 function ContentObject({ section, name, content, selected, liked }: ContentSectionProps) {
-    //console.log("rendered Content Object", name);
     const {
         userContent,
         globalFunctions: {
             updateContent,
+            removeContent,
         }
     } = useGlobalContext();
 
-    const handleDelete = () => {
+    const handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        removeContent(name);
     };
 
     const handleFavourite = (event: React.MouseEvent<HTMLButtonElement>) => {

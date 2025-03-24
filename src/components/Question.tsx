@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { animationVariants } from "../constants";
-import { generateNum, useToggleState } from "../utils";
+import { useToggleState } from "../utils";
 import Arrow from "./Arrow";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { ContentType } from "./GlobalProvider";
 
 const CardContainer = styled.section`
     display: flex;
@@ -12,7 +11,7 @@ const CardContainer = styled.section`
     place-items: center;
     justify-content: center;
     width: 100vw;
-`
+`;
 
 const QuestionContainer = styled(motion.div)`
     position: absolute;
@@ -25,7 +24,7 @@ const QuestionContainer = styled(motion.div)`
     border-radius: 2em;
     box-shadow: 0 0.5rem 1.5rem ${({ theme }) => theme.shadow.third[80]};
     z-index: 1;
-    
+
     .question-text {
         color: ${({ theme }) => theme.color.text};
         font-size: clamp(2rem, max(6vw, 4vh), 10rem);
@@ -34,51 +33,45 @@ const QuestionContainer = styled(motion.div)`
         max-width: 90%;
         max-height: 90%;
     }
-`
+`;
 
 interface QuestionProps {
     content: any[];
-    num: number | undefined;
-    setNum: (num: number) => void;
-    inputValue: string | undefined;
+    index: number | undefined;
+    sessionIndexes: number[];
+    triggerAnimation: "left" | "right" | null;
+    setTriggerAnimation: (triggerAnimation: "left" | "right" | null) => void;
+    onAnimationComplete: () => void;
 }
 
-function Question({ content, num, setNum, inputValue }: QuestionProps) {
-
-    // for when settings page is completed
-    //const [isArrowVisible, toggleIsArrowVisible] = useToggleState(true);
+function Question({ content, index, sessionIndexes, triggerAnimation, setTriggerAnimation, onAnimationComplete }: QuestionProps) {
     const [isCardVisible, toggleIsCardVisible] = useToggleState(false);
     const [animationDirection, setAnimationDirection] = useState<"left" | "right">("left");
+    const [bottomCardText, setBottomCardText] = useState<string>("");
+    const [topCardText, setTopCardText] = useState<string>("");
 
     const startAnimation = (direction: "left" | "right") => {
-        if (isCardVisible) {
-            return;
+        if (isCardVisible) return;
+        if (index !== undefined) {
+            if (direction === "right") {
+                setBottomCardText(content[sessionIndexes[index + 1]].Kanji)
+            }
+            else if (direction === "left") {
+                setBottomCardText(content[sessionIndexes[index]].Kanji)
+            }
         }
         setAnimationDirection(direction);
         toggleIsCardVisible();
     };
 
     useEffect(() => {
-        if (num === undefined) {
-            setNum(generateNum(num, content.length));
-        } else {
-            if (inputValue?.toLowerCase() === content[num].English) {
-                startAnimation("right");
-                setNum(generateNum(num, content.length));
-            }
-        }
-        console.log(content, num);
-    }, [content, num, inputValue]);
-
-
+        if (triggerAnimation === null) return;
+        startAnimation(triggerAnimation);
+    }, [triggerAnimation]);
 
     return (
         <CardContainer>
-            <Arrow
-                direction="left"
-                onClick={() => startAnimation("left")}
-                isArrowVisible={true}
-            />
+            <Arrow direction="left" onClick={() => setTriggerAnimation("left")} isArrowVisible={true} />
 
             <QuestionContainer
                 variants={animationVariants}
@@ -86,37 +79,36 @@ function Question({ content, num, setNum, inputValue }: QuestionProps) {
                 animate={isCardVisible ? (animationDirection === "left" ? ["left", "bounce"] : "right") : "static"}
                 style={{ zIndex: 2 }}
                 onAnimationComplete={() => {
-                    // next
+                    if (isCardVisible) {
+                        toggleIsCardVisible();
+                        onAnimationComplete();
+                    }
                 }}
                 onAnimationStart={() => {
-                    // prev
                     if (animationDirection === "left") {
 
                     }
                 }}
             >
-                <h1 className="question-text">{num !== undefined ? /*content[num] */ "" : ""}</h1>
+                <h1 className="question-text">
+                    {index !== undefined ? content[sessionIndexes[index]].Kanji : ""}
+                </h1>
             </QuestionContainer>
 
             {isCardVisible && (
                 <QuestionContainer
                     variants={animationVariants}
                     animate={animationDirection === "left" ? "shrink" : "rise"}
-                    onAnimationComplete={() => {
-                        if (isCardVisible) toggleIsCardVisible();
-                    }}
                 >
-                    <h1 className="question-text">BEHIND</h1>
+                    <h1 className="question-text">
+                        {bottomCardText}
+                    </h1>
                 </QuestionContainer>
             )}
 
-            <Arrow
-                direction="right"
-                onClick={() => startAnimation("right")}
-                isArrowVisible={true}
-            />
-        </CardContainer >
-    )
+            <Arrow direction="right" onClick={() => setTriggerAnimation("right")} isArrowVisible={true} />
+        </CardContainer>
+    );
 }
 
 export default Question;

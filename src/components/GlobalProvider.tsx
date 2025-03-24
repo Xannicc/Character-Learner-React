@@ -14,6 +14,7 @@ export interface ContentType {
 export interface SettingsType {
     darkMode: boolean;
     forceKanji: boolean;
+
 }
 
 interface FunctionsType {

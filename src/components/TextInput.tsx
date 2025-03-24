@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useGlobalContext } from "./GlobalProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const InputBox = styled.input`
     height: 4rem;
@@ -25,10 +25,11 @@ const InputBox = styled.input`
 `
 
 interface TextInputProps {
+    inputValue: string | undefined;
     setInputValue: (inputValue: string) => void;
 }
 
-function TextInput({ setInputValue }: TextInputProps) {
+function TextInput({ inputValue, setInputValue }: TextInputProps) {
     const [userInput, setUserInput] = useState("");
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -36,6 +37,12 @@ function TextInput({ setInputValue }: TextInputProps) {
             setInputValue(userInput);
         }
     };
+
+    useEffect(() => {
+        if (inputValue === "") {
+            setUserInput("");
+        }
+    }, [inputValue])
 
     return (
         <InputBox

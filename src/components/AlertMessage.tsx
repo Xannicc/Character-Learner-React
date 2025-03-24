@@ -2,12 +2,12 @@ import styled from "styled-components";
 
 const MessageBackground = styled.div`
     position: absolute;
-    background-color: #ffffff3f;
+    background-color: #00000020;
     height: 100vh;
     width: 100vw;
-    z-index: -1;
+    z-index: 3;     
     top: 0;
-    filter: blur(30px);
+    backdrop-filter: blur(0.1em);
 `
 
 const MessageContainer = styled.div`
@@ -23,6 +23,7 @@ const MessageContainer = styled.div`
     overflow: hidden;
     left: calc(50vw - 13.5rem);
     top: calc(50vh - 10rem);
+    box-shadow: 0 0.4rem 0.5rem ${({ theme }) => theme.shadow.third[80]};
 `
 const MessageTitle = styled.h1`
     font-size: 2.5rem;

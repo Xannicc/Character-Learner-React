@@ -54,9 +54,12 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
         if (isCardVisible) return;
         if (index !== undefined) {
             if (direction === "right") {
+                setTopCardText(content[sessionIndexes[index]].Kanji);
                 setBottomCardText(content[sessionIndexes[index + 1]].Kanji)
             }
             else if (direction === "left") {
+                if (index === 0) return;
+                setTopCardText(content[sessionIndexes[index - 1]].Kanji);
                 setBottomCardText(content[sessionIndexes[index]].Kanji)
             }
         }
@@ -80,18 +83,20 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
                 style={{ zIndex: 2 }}
                 onAnimationComplete={() => {
                     if (isCardVisible) {
+                        if (animationDirection === "right") {
+                            index !== undefined ? setTopCardText(content[sessionIndexes[index + 1]].Kanji) : setTopCardText("");
+                        }
                         toggleIsCardVisible();
                         onAnimationComplete();
-                    }
-                }}
-                onAnimationStart={() => {
-                    if (animationDirection === "left") {
 
                     }
                 }}
+                onAnimationStart={() => {
+
+                }}
             >
                 <h1 className="question-text">
-                    {index !== undefined ? content[sessionIndexes[index]].Kanji : ""}
+                    {topCardText}
                 </h1>
             </QuestionContainer>
 

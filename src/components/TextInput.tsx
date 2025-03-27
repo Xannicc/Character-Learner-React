@@ -27,6 +27,8 @@ const InputBox = styled.input`
 interface TextInputProps {
     inputValue: string | undefined;
     setInputValue: (inputValue: string) => void;
+    showAnswer: boolean;
+    toggleShowAnswer: () => void;
 }
 
 function TextInput({ inputValue, setInputValue }: TextInputProps) {
@@ -35,6 +37,9 @@ function TextInput({ inputValue, setInputValue }: TextInputProps) {
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             setInputValue(userInput);
+        }
+        else if (event.shiftKey && event.repeat) {
+
         }
     };
 

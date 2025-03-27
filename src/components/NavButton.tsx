@@ -33,7 +33,6 @@ const CircleButton = styled.button <{ color: string, animation?: string, text?: 
 
 const ButtonText = styled.span<{ animation?: string }>`
     font-family: outfit;
-    width: 100%;
     height: 100%;
     border-radius: 0.5rem;
     display: flex;

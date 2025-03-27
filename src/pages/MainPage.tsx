@@ -3,7 +3,7 @@ import Question from "../components/Question";
 import TextInput from "../components/TextInput";
 import { useGlobalContext } from "../components/GlobalProvider";
 import { useEffect, useMemo, useState } from "react";
-import { generateNum } from "../utils";
+import { generateNum, useToggleState } from "../utils";
 
 const MainContainer = styled.div`
     display: flex;
@@ -17,11 +17,16 @@ const MainContainer = styled.div`
     }
 `;
 
+const Answer = styled.h2`
+    
+`
+
 function MainPage() {
     const { userContent } = useGlobalContext();
     const [index, setIndex] = useState<number | undefined>(undefined);
     const [sessionIndexes, setSessionIndexes] = useState<number[]>([]);
     const [inputValue, setInputValue] = useState<string | undefined>(undefined);
+    const [showAnswer, toggleShowAnswer] = useToggleState(false);
     const [triggerAnimation, setTriggerAnimation] = useState<"left" | "right" | null>(null);
 
     const sessionContent = useMemo(() => {
@@ -82,9 +87,12 @@ function MainPage() {
                         setTriggerAnimation={setTriggerAnimation}
                         onAnimationComplete={handleAnimationComplete}
                     />
+                    <Answer>{showAnswer && index !== undefined ? sessionContent[sessionIndexes[index]].English : ""}</Answer>
                     <TextInput
                         inputValue={inputValue}
                         setInputValue={setInputValue}
+                        showAnswer={showAnswer}
+                        toggleShowAnswer={toggleShowAnswer}
                     />
                 </>
             )}

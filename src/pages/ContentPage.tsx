@@ -13,7 +13,6 @@ const ContentContainer = styled.div`
     flex-direction: column;
     align-items: left;
     justify-content: center;
-    overflow-y: scroll;
 `
 
 const FileInputContainer = styled.div`

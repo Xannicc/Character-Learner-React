@@ -72,6 +72,10 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
         startAnimation(triggerAnimation);
     }, [triggerAnimation]);
 
+    useEffect(() => {
+        index !== undefined ? setTopCardText(content[sessionIndexes[index]].Kanji) : setTopCardText("");
+    }, [])
+
     return (
         <CardContainer>
             <Arrow direction="left" onClick={() => setTriggerAnimation("left")} isArrowVisible={true} />

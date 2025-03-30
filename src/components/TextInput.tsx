@@ -1,26 +1,25 @@
 import styled from "styled-components";
-import { useGlobalContext } from "./GlobalProvider";
 import { useEffect, useState } from "react";
 
 const InputBox = styled.input`
     height: 4rem;
-    max-width: 70vw;
+    max-width: calc(70vw - 0.6em);
     font-size: 3rem;
     border-radius: 0.5em;
     border: 0;
     color: ${({ theme }) => theme.color.text};
     background-color: ${({ theme }) => theme.color.third};
     box-shadow: 0 0 1.5rem ${({ theme }) => theme.shadow.third[80]};
-    margin-top: 8rem;
+    margin-bottom: 1em;
     transition: all 0.2s ease-in-out;
-    padding: 0 1rem;
+    padding: 0 0.3em;
 
     &:focus {
         box-shadow: 0 0 1.5rem ${({ theme }) => theme.shadow.text[20]};
     }
     
     @media (max-width: 768px) {
-        margin-top: 6rem;
+        margin-bottom: 1.5em;
     }
 `
 
@@ -31,17 +30,30 @@ interface TextInputProps {
     toggleShowAnswer: () => void;
 }
 
-function TextInput({ inputValue, setInputValue }: TextInputProps) {
+function TextInput({ inputValue, setInputValue, showAnswer, toggleShowAnswer }: TextInputProps) {
     const [userInput, setUserInput] = useState("");
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             setInputValue(userInput);
-        }
-        else if (event.shiftKey && event.repeat) {
-
+        } else if (event.key === "Shift" && event.repeat) {
+            return;
+        } else if (event.key === "Shift") {
+            toggleShowAnswer();
         }
     };
+
+    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Shift") {
+            toggleShowAnswer();
+        }
+    };
+
+    const handleBlur = () => {
+        if (showAnswer) {
+            toggleShowAnswer();
+        }
+    }
 
     useEffect(() => {
         if (inputValue === "") {
@@ -55,6 +67,8 @@ function TextInput({ inputValue, setInputValue }: TextInputProps) {
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
+            onBlur={handleBlur}
         />
     );
 }

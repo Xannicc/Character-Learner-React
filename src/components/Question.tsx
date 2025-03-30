@@ -11,12 +11,19 @@ const CardContainer = styled.section`
     place-items: center;
     justify-content: center;
     width: 100vw;
+    margin-top: 10em;
+    height: 50vh;
+    background-color: yellow;
+
+    @media (max-width: 768px) {
+        margin-top: 0;
+    }
 `;
 
 const QuestionContainer = styled(motion.div)`
     position: absolute;
     display: flex;
-    width: min(70vw, 75rem);
+    width: min(70vw, 60em);
     height: 50vh;
     place-items: center;
     justify-content: center;

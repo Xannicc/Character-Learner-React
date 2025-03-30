@@ -10,7 +10,8 @@ const MainContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 5%;
+    height: 100vh;
+    background-color: blue;
 
     @media (max-width: 768px) {
         margin-top: max(10%, 6rem);
@@ -18,7 +19,8 @@ const MainContainer = styled.div`
 `;
 
 const Answer = styled.h2`
-    
+    font-size: 2rem;
+    height: 2rem;
 `
 
 function MainPage() {
@@ -44,7 +46,7 @@ function MainPage() {
             setSessionIndexes([firstNum, generateNum(firstNum, sessionContent.length)]);
             setIndex(0);
         }
-    }, [sessionContent]);
+    }, []);
 
     useEffect(() => {
         if (index !== undefined && inputValue?.toLowerCase() === sessionContent[sessionIndexes[index]]?.English.toLowerCase()) {
@@ -77,7 +79,7 @@ function MainPage() {
 
     return (
         <MainContainer>
-            {sessionContent.length > 0 && (
+            {sessionContent.length > 0 && index !== undefined && (
                 <>
                     <Question
                         content={sessionContent}

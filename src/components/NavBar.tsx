@@ -12,7 +12,7 @@ const NavContainer = styled.div`
     flex-direction: row-reverse;
     place-items: center;
     width: 100vw;
-    height: 5rem;
+    height: 4.25em;
     top: 0;
     left: 0;
     background-color: ${({ theme }) => theme.color.third};

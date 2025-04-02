@@ -11,8 +11,8 @@ const CardContainer = styled.section`
     place-items: center;
     justify-content: center;
     width: 100vw;
-    margin-top: 10em;
-    height: 50vh;
+    margin-top: 9em;
+    height: 60vh;
     background-color: yellow;
 
     @media (max-width: 768px) {
@@ -24,7 +24,7 @@ const QuestionContainer = styled(motion.div)`
     position: absolute;
     display: flex;
     width: min(70vw, 60em);
-    height: 50vh;
+    height: 60vh;
     place-items: center;
     justify-content: center;
     background-color: ${({ theme }) => theme.color.third};

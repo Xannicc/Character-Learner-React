@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const InputBox = styled.input`
     height: 4rem;
-    max-width: calc(70vw - 0.6em);
+    max-width: calc(60vw - 0.6em);
     font-size: 3rem;
     border-radius: 0.5em;
     border: 0;

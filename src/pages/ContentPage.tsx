@@ -8,7 +8,7 @@ import { ContentType, useGlobalContext } from "../components/GlobalProvider";
 const ContentContainer = styled.div`
     position: absolute; 
     width: 100%;
-    top: 5rem;
+    top: 4.5em;
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -18,26 +18,40 @@ const ContentContainer = styled.div`
 const FileInputContainer = styled.div`
     position: absolute;
     display: flex;
-    height: 4rem;
-    width: 4rem;
+    height: 3.5em;
+    width: 3.5em;
     border-radius: 50%;
     background-color: ${({ theme }) => theme.color.third};
     align-items: center;
     justify-content: center;
-    right: 2rem;
-    top: 2rem;
+    right: 1em;
+    top: 1em;
     transition: all 0.2s ease-in-out;
-    font-size: 2rem;
     box-shadow: 0 0.5rem 1rem ${({ theme }) => theme.shadow.third[80]};
 
+    span {
+        aspect-ratio: 1;
+        height: 2em;
+        width: 2em;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;   
+        transition: all 0.2s ease-in-out;
+    }
+
+    span:hover {
+        font-size: 2.5rem;   
+    }
+
     &:hover {
-        font-size: 2.5rem;
         background-color: ${({ theme }) => theme.shadow.text[15]};
     }
 
     &:active {
         box-shadow: 0 0rem 1rem ${({ theme }) => theme.shadow.third[80]};
-        transform: translateY(0.1em);
+        transform: translateY(0.15em);
     }
 `
 
@@ -83,7 +97,9 @@ function ContentPage({ setCurrentPage }: ContentProps) {
                 <label
                     htmlFor="file-upload"
                 >
-                    +
+                    <span>
+                        +
+                    </span>
                 </label>
                 <HiddenFileInput
                     id="file-upload"

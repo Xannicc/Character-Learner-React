@@ -7,8 +7,8 @@ import thumbIcon from "../assets/thumb-icon.svg?react";
 const ObjectContainer = styled.div<{ selected: boolean }>`
     display: flex;
     flex-direction: column;
-    width: 18rem;
-    height: 12rem;
+    width: 16rem;
+    height: 11rem;
     border-radius: 2rem;
     margin: 1.5rem;
     background-color: ${({ theme, selected }) => selected ? theme.shadow.accent[70] : theme.color.third};
@@ -26,8 +26,7 @@ const ObjectContainer = styled.div<{ selected: boolean }>`
 `
 
 const ObjectButtonContainer = styled.div`
-    margin-top: 3.5rem;
-    bottom: 0;
+    margin-top: 3rem;
     width: 100%;
 `
 

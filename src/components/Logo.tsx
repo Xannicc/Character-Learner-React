@@ -4,12 +4,12 @@ import "../index.css"
 const LogoButton = styled.button`
     position: absolute;
     border: none;
-    background-color: ${({ theme }) => theme.color.third};
+    background-color: rgba(0,0,0,0);
     left: clamp(1em, 2%, 2em);
     font-size: 170%;
     line-height: 0;
     font-family: "onsen-japan";
-    padding-top: 0.5em;
+    padding-top: 0.35em;
     transition: all 0.2s ease-in-out;
     width: 4rem;
     aspect-ratio: 1;

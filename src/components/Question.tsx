@@ -11,30 +11,30 @@ const CardContainer = styled.section`
     place-items: center;
     justify-content: center;
     width: 100vw;
-    margin-top: 10em;
-    height: 50vh;
-    background-color: yellow;
-
+    margin-top: calc(4em + 4rem);
+    min-height: max(60vh, 30em);
+ 
     @media (max-width: 768px) {
-        margin-top: 0;
+        margin-top: calc(4em + 4rem);
     }
 `;
 
 const QuestionContainer = styled(motion.div)`
     position: absolute;
     display: flex;
-    width: min(70vw, 60em);
-    height: 50vh;
+    aspect-ratio: 4 / 3;
+    height: max(60vh, 30em); 
     place-items: center;
     justify-content: center;
     background-color: ${({ theme }) => theme.color.third};
-    border-radius: 2em;
+    border-radius: max(2em, 2vh);
     box-shadow: 0 0.5rem 1.5rem ${({ theme }) => theme.shadow.third[80]};
     z-index: 1;
 
     .question-text {
         color: ${({ theme }) => theme.color.text};
-        font-size: clamp(2rem, max(6vw, 4vh), 10rem);
+        /* font-size: clamp(2rem, max(6vw, 4vh), 10rem); */
+        font-size: max(min(8rem, max(6vw, 4vh)), 2rem);
         text-align: center;
         width: fit-content;
         max-width: 90%;
@@ -94,12 +94,14 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
                 style={{ zIndex: 2 }}
                 onAnimationComplete={() => {
                     if (isCardVisible) {
-                        if (animationDirection === "right") {
-                            index !== undefined ? setTopCardText(content[sessionIndexes[index + 1]].Kanji) : setTopCardText("");
-                        }
-                        toggleIsCardVisible();
-                        onAnimationComplete();
-
+                        const animationDuration = animationDirection === "left" ? 0 : 300;
+                        setTimeout(() => {
+                            if (animationDirection === "right") {
+                                index !== undefined ? setTopCardText(content[sessionIndexes[index + 1]].Kanji) : setTopCardText("");
+                            }
+                            toggleIsCardVisible();
+                            onAnimationComplete();
+                        }, animationDuration);
                     }
                 }}
                 onAnimationStart={() => {

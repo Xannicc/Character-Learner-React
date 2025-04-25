@@ -10,12 +10,7 @@ const MainContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: blue;
-
-    @media (max-width: 768px) {
-        margin-top: max(10%, 6rem);
-    }
+    height: 100%;
 `;
 
 const Answer = styled.h2`
@@ -49,7 +44,11 @@ function MainPage() {
     }, []);
 
     useEffect(() => {
-        if (index !== undefined && inputValue?.toLowerCase() === sessionContent[sessionIndexes[index]]?.English.toLowerCase()) {
+        if (index !== undefined && sessionContent[sessionIndexes[index]]
+            ?.English.toLowerCase().split(";")
+            .map((w: string) => w.trim())
+            .includes(inputValue?.toLowerCase())
+        ) {
             setInputValue("");
             setTriggerAnimation("right");
         }
@@ -89,7 +88,7 @@ function MainPage() {
                         setTriggerAnimation={setTriggerAnimation}
                         onAnimationComplete={handleAnimationComplete}
                     />
-                    <Answer>{showAnswer && index !== undefined ? sessionContent[sessionIndexes[index]].English : ""}</Answer>
+                    <Answer>{showAnswer && index !== undefined ? sessionContent[sessionIndexes[index]].English + "  " + sessionContent[sessionIndexes[index]].Kana : ""}</Answer>
                     <TextInput
                         inputValue={inputValue}
                         setInputValue={setInputValue}

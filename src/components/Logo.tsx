@@ -6,14 +6,12 @@ const LogoButton = styled.button`
     border: none;
     background-color: rgba(0,0,0,0);
     left: clamp(1em, 2%, 2em);
-    font-size: 170%;
-    line-height: 0;
+    font-size: 1.75rem;
     font-family: "onsen-japan";
     padding-top: 0.35em;
     transition: all 0.2s ease-in-out;
-    width: 4rem;
-    aspect-ratio: 1;
     text-align: center;
+    background-color: rgba(0, 0, 0, 0);
 
     &:hover {
         opacity: 75%;

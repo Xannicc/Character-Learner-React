@@ -10,17 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.1.0",
     "framer-motion": "^12.4.7",
     "papaparse": "^5.5.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-transition-group": "^4.4.5",
     "styled-components": "^6.1.15",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "wanakana": "^5.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
-    "@types/papaparse": "^5.3.15",
+    "@types/papaparse": "^5.3.16",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-transition-group": "^4.4.12",

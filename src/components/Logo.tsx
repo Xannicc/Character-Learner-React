@@ -12,6 +12,7 @@ const LogoButton = styled.button`
     transition: all 0.2s ease-in-out;
     text-align: center;
     background-color: rgba(0, 0, 0, 0);
+    color: ${({ theme }) => theme.color.text};
 
     &:hover {
         opacity: 75%;

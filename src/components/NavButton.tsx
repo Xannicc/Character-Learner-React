@@ -1,9 +1,9 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import { PageContext } from "../App";
 import "../index.css"
 import SVGComponent from "./SVGcomponent";
 import { useGlobalContext } from "./GlobalProvider";
+import { PageContext } from "../App";
 
 const CircleButton = styled.button <{ color: string, animation?: string, text?: string }>`
     height: 70%;
@@ -65,6 +65,11 @@ const NavButton: React.FC<NavButtonProps> = ({ id, svg, text, color, animation }
 
     const { currentPage, setCurrentPage } = pageContext;
 
+    const {
+        userSettings: { settingsMode },
+        globalFunctions: { toggleSettings }
+    } = useGlobalContext();
+
     const handleNavButtonClick = () => {
         if (id === currentPage) {
             setCurrentPage("main");
@@ -72,7 +77,10 @@ const NavButton: React.FC<NavButtonProps> = ({ id, svg, text, color, animation }
         else if (id === "profile") {
 
         }
-        else {
+        else if (id == "settings") {
+            toggleSettings(settingsMode);
+        }
+        else if (id == "content") {
             setCurrentPage(id);
         }
     }

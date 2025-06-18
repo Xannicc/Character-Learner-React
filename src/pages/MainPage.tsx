@@ -4,22 +4,35 @@ import TextInput from "../components/TextInput";
 import { useGlobalContext } from "../components/GlobalProvider";
 import { useEffect, useMemo, useState } from "react";
 import { generateNum, useToggleState } from "../utils";
+import { toRomaji } from "wanakana";
 
 const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    min-height: calc(100vh - 4rem);
+    margin: 4rem 0 0 0;
+    overflow: auto;
 `;
 
 const Answer = styled.h2`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 2rem;
-    height: 2rem;
+    width: 100%;
+    line-height: 2rem;
+    min-height: 3rem;
+    margin: 0;
 `
 
 function MainPage() {
-    const { userContent } = useGlobalContext();
+    const {
+        userContent,
+        userSettings: { enableRomaji, writeMode }
+    } = useGlobalContext();
+
     const [index, setIndex] = useState<number | undefined>(undefined);
     const [sessionIndexes, setSessionIndexes] = useState<number[]>([]);
     const [inputValue, setInputValue] = useState<string | undefined>(undefined);
@@ -44,13 +57,17 @@ function MainPage() {
     }, []);
 
     useEffect(() => {
-        if (index !== undefined && sessionContent[sessionIndexes[index]]
-            ?.English.toLowerCase().split(";")
-            .map((w: string) => w.trim())
-            .includes(inputValue?.toLowerCase())
-        ) {
-            setInputValue("");
-            setTriggerAnimation("right");
+        if (index !== undefined) {
+            if (String(sessionContent[sessionIndexes[index]][
+                (writeMode === "Kana" || writeMode === "Kanji") && enableRomaji ? "Romaji" : writeMode]
+            )
+                .toLowerCase().split(";")
+                .map((w: string) => w.trim())
+                .includes(String(inputValue).toLowerCase())
+            ) {
+                setInputValue("");
+                setTriggerAnimation("right");
+            }
         }
     }, [inputValue]);
 
@@ -77,27 +94,29 @@ function MainPage() {
     };
 
     return (
-        <MainContainer>
-            {sessionContent.length > 0 && index !== undefined && (
-                <>
-                    <Question
-                        content={sessionContent}
-                        index={index}
-                        sessionIndexes={sessionIndexes}
-                        triggerAnimation={triggerAnimation}
-                        setTriggerAnimation={setTriggerAnimation}
-                        onAnimationComplete={handleAnimationComplete}
-                    />
-                    <Answer>{showAnswer && index !== undefined ? sessionContent[sessionIndexes[index]].English + "  " + sessionContent[sessionIndexes[index]].Kana : ""}</Answer>
-                    <TextInput
-                        inputValue={inputValue}
-                        setInputValue={setInputValue}
-                        showAnswer={showAnswer}
-                        toggleShowAnswer={toggleShowAnswer}
-                    />
-                </>
-            )}
-        </MainContainer>
+        <>
+            <MainContainer>
+                {sessionContent.length > 0 && index !== undefined && (
+                    <>
+                        <Question
+                            content={sessionContent}
+                            index={index}
+                            sessionIndexes={sessionIndexes}
+                            triggerAnimation={triggerAnimation}
+                            setTriggerAnimation={setTriggerAnimation}
+                            onAnimationComplete={handleAnimationComplete}
+                        />
+                        <Answer>{showAnswer && index !== undefined ? sessionContent[sessionIndexes[index]].English + "  " + sessionContent[sessionIndexes[index]].Kana : ""}</Answer>
+                        <TextInput
+                            inputValue={inputValue}
+                            setInputValue={setInputValue}
+                            showAnswer={showAnswer}
+                            toggleShowAnswer={toggleShowAnswer}
+                        />
+                    </>
+                )}
+            </MainContainer>
+        </>
     );
 }
 

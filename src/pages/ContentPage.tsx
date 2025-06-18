@@ -13,6 +13,7 @@ const ContentContainer = styled.div`
     flex-direction: column;
     align-items: left;
     justify-content: center;
+    color: ${({ theme }) => theme.color.text};
 `
 
 const FileInputContainer = styled.div`
@@ -28,6 +29,7 @@ const FileInputContainer = styled.div`
     top: 1em;
     transition: all 0.2s ease-in-out;
     box-shadow: 0 0.5rem 1rem ${({ theme }) => theme.shadow.third[80]};
+    color: ${({ theme }) => theme.color.text};
 
     span {
         aspect-ratio: 1;
@@ -66,7 +68,10 @@ interface ContentProps {
 function ContentPage({ setCurrentPage }: ContentProps) {
     const {
         userContent,
-        globalFunctions: { addContent }
+        globalFunctions: {
+            addContent,
+            sortContent
+        }
     } = useGlobalContext();
 
     const handleAddFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +83,7 @@ function ContentPage({ setCurrentPage }: ContentProps) {
         for (let file of files) {
             try {
                 const parsed = await parseCSV(file);
+                console.log(parsed);
                 addContent({
                     name: file.name.slice(0, -4),
                     content: parsed,
@@ -89,6 +95,7 @@ function ContentPage({ setCurrentPage }: ContentProps) {
                 console.error(error);
             }
         }
+        sortContent((a: ContentType, b: ContentType) => a.name.localeCompare(b.name));
     };
 
     return (

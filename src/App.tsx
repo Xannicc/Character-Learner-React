@@ -1,11 +1,7 @@
-
-import NavBar from "./components/NavBar"
-import { useState, createContext } from "react"
-import { PageType } from "./constants"
-import MainPage from "./pages/MainPage";
-import ContentPage from "./pages/ContentPage";
-import SettingsPage from "./pages/SettingsPage";
+import { createContext } from "react";
 import GlobalProvider from "./components/GlobalProvider";
+import { PageType } from "./constants";
+import PageContainer from "./pages/PageContainer";
 
 export const PageContext = createContext<{
     currentPage: PageType;
@@ -13,27 +9,11 @@ export const PageContext = createContext<{
 } | undefined>(undefined);
 
 function App() {
-    const [currentPage, setCurrentPage] = useState<PageType>("main");
-
-    const pages = {
-        main: <MainPage />,
-        content: <ContentPage setCurrentPage={setCurrentPage} />,
-        popularContent: <></>,
-        settings: <SettingsPage />,
-    }
-
     return (
         <GlobalProvider>
-            <PageContext.Provider
-                value={{ currentPage, setCurrentPage }}
-            >
-                <NavBar />
-            </PageContext.Provider>
-            <section>
-                {pages[currentPage]}
-            </section>
+            <PageContainer />
         </GlobalProvider>
     )
 }
 
-export default App
+export default App;

@@ -57,10 +57,16 @@ const pages = [
     "main",
     "content",
     "popularContent",
-    "settings",
 ] as const;
 
 export type PageType = (typeof pages)[number];
+
+export interface csvFormat {
+    Kanji: string;
+    Kana: string;
+    Romaji: string;
+    English: string;
+}
 
 export interface UserInformation {
     username: string;

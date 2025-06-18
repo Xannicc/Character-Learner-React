@@ -11,20 +11,32 @@ export interface ContentType {
     liked: boolean;
 }
 
-export interface SettingsType {
-    darkMode: boolean;
-    forceKanji: boolean;
-
-}
-
-interface FunctionsType {
+interface ContentFunctions {
     addContent: (content: ContentType) => void;
     removeContent: (name: string) => void;
     sortContent: (compareFn: (a: ContentType, b: ContentType) => number) => void;
     updateContent: (content: ContentType) => void;
+}
 
+export interface SettingsType {
+    settingsMode: boolean;
+    darkMode: boolean;
+    forceKanji: boolean;
+    enableRomaji: boolean;
+    displayMode: "Kanji" | "Kana" | "English";
+    writeMode: "Kanji" | "Kana" | "English";
+}
+
+interface SettingsFunctions {
+    toggleSettings: (settingsMode: boolean) => void;
     toggleDarkMode: (darkMode: boolean) => void;
-    toggleForceKanji: (toggleForceKanji: boolean) => void;
+    toggleForceKanji: (forceKanji: boolean) => void;
+    toggleEnableRomaji: (enableKanji: boolean) => void;
+    updateDisplayMode: (displayMode: "Kanji" | "Kana" | "English") => void;
+    updateWriteMode: (writeMode: "Kanji" | "Kana" | "English") => void;
+}
+
+interface FunctionsType extends ContentFunctions, SettingsFunctions {
 }
 
 interface GlobalContextType {
@@ -68,8 +80,12 @@ const userContentReducer = (state: ContentType[], action: Action): ContentType[]
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 function GlobalProvider({ children }: { children: ReactNode }) {
+    const [settingsMode, toggleSettings] = useToggleState(false);
     const [darkMode, toggleDarkMode] = useToggleState(true);
     const [forceKanji, toggleForceKanji] = useToggleState(false);
+    const [enableRomaji, toggleEnableRomaji] = useToggleState(false);
+    const [displayMode, updateDisplayMode] = useState<"Kanji" | "Kana" | "English">("Kanji");
+    const [writeMode, updateWriteMode] = useState<"Kanji" | "Kana" | "English">("English");
 
     const [userContent, contentDispatch] = useReducer(userContentReducer, []);
 
@@ -99,16 +115,24 @@ function GlobalProvider({ children }: { children: ReactNode }) {
                 value={{
                     userContent,
                     userSettings: {
+                        settingsMode,
                         darkMode,
                         forceKanji,
+                        enableRomaji,
+                        displayMode,
+                        writeMode
                     },
                     globalFunctions: {
                         addContent,
                         removeContent,
                         sortContent,
                         updateContent,
+                        toggleSettings,
                         toggleDarkMode,
                         toggleForceKanji,
+                        toggleEnableRomaji,
+                        updateDisplayMode,
+                        updateWriteMode
                     }
                 }}
             >

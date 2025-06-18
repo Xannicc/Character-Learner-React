@@ -11,6 +11,7 @@ const ObjectContainer = styled.div<{ selected: boolean }>`
     height: 11rem;
     border-radius: 2rem;
     margin: 1.5rem;
+    color: ${({ theme }) => theme.color.text};
     background-color: ${({ theme, selected }) => selected ? theme.shadow.accent[70] : theme.color.third};
     box-shadow: 0 0.5rem 1rem ${({ theme }) => theme.shadow.third[80]};
     transition: all 0.2s ease-in-out;

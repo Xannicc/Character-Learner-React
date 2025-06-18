@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { animationVariants } from "../constants";
 import { useToggleState } from "../utils";
 import Arrow from "./Arrow";
-import { motion } from "framer-motion";
+import { motion, px } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useGlobalContext } from "./GlobalProvider";
 
 const CardContainer = styled.section`
     display: flex;
@@ -11,11 +12,11 @@ const CardContainer = styled.section`
     place-items: center;
     justify-content: center;
     width: 100vw;
-    margin-top: calc(4em + 4rem);
+    margin: 3.5em 0 0 0;
     min-height: max(60vh, 30em);
  
     @media (max-width: 768px) {
-        margin-top: calc(4em + 4rem);
+        margin: 2em 0 0 0;
     }
 `;
 
@@ -40,6 +41,11 @@ const QuestionContainer = styled(motion.div)`
         max-width: 90%;
         max-height: 90%;
     }
+
+     @media (max-width: 768px) {
+        width: 80vw;
+        height: max(60vh, 30em); 
+    }
 `;
 
 interface QuestionProps {
@@ -56,18 +62,32 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
     const [animationDirection, setAnimationDirection] = useState<"left" | "right">("left");
     const [bottomCardText, setBottomCardText] = useState<string>("");
     const [topCardText, setTopCardText] = useState<string>("");
+    const [drawArrows, setDrawArrows] = useState<boolean>(window.innerWidth > 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setDrawArrows(window.innerWidth > 768);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const {
+        userSettings: { displayMode }
+    } = useGlobalContext();
 
     const startAnimation = (direction: "left" | "right") => {
         if (isCardVisible) return;
         if (index !== undefined) {
             if (direction === "right") {
-                setTopCardText(content[sessionIndexes[index]].Kanji);
-                setBottomCardText(content[sessionIndexes[index + 1]].Kanji)
+                setTopCardText(content[sessionIndexes[index]][displayMode]);
+                setBottomCardText(content[sessionIndexes[index + 1]][displayMode])
             }
             else if (direction === "left") {
                 if (index === 0) return;
-                setTopCardText(content[sessionIndexes[index - 1]].Kanji);
-                setBottomCardText(content[sessionIndexes[index]].Kanji)
+                setTopCardText(content[sessionIndexes[index - 1]][displayMode]);
+                setBottomCardText(content[sessionIndexes[index]][displayMode])
             }
         }
         setAnimationDirection(direction);
@@ -80,12 +100,12 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
     }, [triggerAnimation]);
 
     useEffect(() => {
-        index !== undefined ? setTopCardText(content[sessionIndexes[index]].Kanji) : setTopCardText("");
-    }, [])
+        index !== undefined ? setTopCardText(content[sessionIndexes[index]][displayMode]) : setTopCardText("");
+    }, [displayMode])
 
     return (
         <CardContainer>
-            <Arrow direction="left" onClick={() => setTriggerAnimation("left")} isArrowVisible={true} />
+            <Arrow direction="left" onClick={() => setTriggerAnimation("left")} isArrowVisible={drawArrows} />
 
             <QuestionContainer
                 variants={animationVariants}
@@ -97,7 +117,7 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
                         const animationDuration = animationDirection === "left" ? 0 : 300;
                         setTimeout(() => {
                             if (animationDirection === "right") {
-                                index !== undefined ? setTopCardText(content[sessionIndexes[index + 1]].Kanji) : setTopCardText("");
+                                index !== undefined ? setTopCardText(content[sessionIndexes[index + 1]][displayMode]) : setTopCardText("");
                             }
                             toggleIsCardVisible();
                             onAnimationComplete();
@@ -124,7 +144,7 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
                 </QuestionContainer>
             )}
 
-            <Arrow direction="right" onClick={() => setTriggerAnimation("right")} isArrowVisible={true} />
+            <Arrow direction="right" onClick={() => setTriggerAnimation("right")} isArrowVisible={drawArrows} />
         </CardContainer>
     );
 }

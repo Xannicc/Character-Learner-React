@@ -1,6 +1,8 @@
 import { useCallback, useState } from "react";
 import Papa from "papaparse";
 import { ContentType, useGlobalContext } from "./components/GlobalProvider";
+import { csvFormat } from "./constants";
+import { toRomaji } from "wanakana";
 
 export function hexToRGB(hex: string) {
     hex = hex.replace(/^#/, "");
@@ -26,18 +28,21 @@ export function useToggleState(initialState: boolean) {
     return [state, toggle] as const;
 };
 
-export const parseCSV = (file: File): Promise<any> => {
+export const parseCSV = (file: File): Promise<csvFormat[]> => {
     return new Promise((resolve, reject) => {
         if (file && file.type === "text/csv") {
             const reader = new FileReader();
 
             reader.onload = () => {
                 const csvText = reader.result as string;
-                const result = Papa.parse(csvText, {
+                const result = Papa.parse<csvFormat>(csvText, {
                     header: true,
                     skipEmptyLines: true,
                 });
-                resolve(result.data);
+                resolve(result.data.map((entry: csvFormat) => entry.Kanji === "" || entry.Kanji === undefined ?
+                    { Kanji: entry.Kana, Kana: entry.Kana, Romaji: toRomaji(entry.Kana), English: entry.English } :
+                    { Kanji: entry.Kanji, Kana: entry.Kana, Romaji: toRomaji(entry.Kana), English: entry.English })
+                );
             };
 
             reader.onerror = () => {
@@ -52,13 +57,24 @@ export const parseCSV = (file: File): Promise<any> => {
     });
 };
 
+// export const generateNum = (num: number | undefined, max: number) => {
+//     if (num === undefined) {
+//         return Math.floor(Math.random() * max);
+//     }
+//     let nextNum = Math.floor(Math.random() * max);
+//     while (nextNum === num) {
+//         nextNum = Math.floor(Math.random() * max);
+//     }
+//     return nextNum;
+// };
+
 export const generateNum = (num: number | undefined, max: number) => {
     if (num === undefined) {
-        return Math.floor(Math.random() * max);
+        return Math.floor((Math.random() * 10000)) % (max + 1);
     }
-    let nextNum = Math.floor(Math.random() * max);
+    let nextNum = Math.floor((Math.random() * 10000)) % (max + 1);
     while (nextNum === num) {
-        nextNum = Math.floor(Math.random() * max);
+        nextNum = Math.floor((Math.random() * 10000)) % (max + 1);
     }
     return nextNum;
 };

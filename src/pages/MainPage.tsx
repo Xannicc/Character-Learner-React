@@ -77,7 +77,7 @@ function MainPage() {
                 const nextIndex = index + 1;
                 setSessionIndexes([
                     ...sessionIndexes,
-                    generateNum(sessionIndexes[index], sessionContent.length),
+                    generateNum(sessionIndexes[index + 1], sessionContent.length),
                 ]);
                 setIndex(nextIndex);
                 setTriggerAnimation(null);

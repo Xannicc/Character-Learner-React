@@ -3,7 +3,7 @@ import { animationVariants } from "../constants";
 import { useToggleState } from "../utils";
 import Arrow from "./Arrow";
 import { motion, px } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useGlobalContext } from "./GlobalProvider";
 
 const CardContainer = styled.section`
@@ -77,7 +77,7 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
         userSettings: { displayMode }
     } = useGlobalContext();
 
-    const startAnimation = (direction: "left" | "right") => {
+    const startAnimation = useCallback((direction: "left" | "right") => {
         if (isCardVisible) return;
         if (index !== undefined) {
             if (direction === "right") {
@@ -92,7 +92,9 @@ function Question({ content, index, sessionIndexes, triggerAnimation, setTrigger
         }
         setAnimationDirection(direction);
         toggleIsCardVisible();
-    };
+    }, [
+        index
+    ]);
 
     useEffect(() => {
         if (triggerAnimation === null) return;

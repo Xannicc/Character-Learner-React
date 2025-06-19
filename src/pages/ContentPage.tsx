@@ -83,7 +83,6 @@ function ContentPage({ setCurrentPage }: ContentProps) {
         for (let file of files) {
             try {
                 const parsed = await parseCSV(file);
-                console.log(parsed);
                 addContent({
                     name: file.name.slice(0, -4),
                     content: parsed,

@@ -69,12 +69,9 @@ export const parseCSV = (file: File): Promise<csvFormat[]> => {
 // };
 
 export const generateNum = (num: number | undefined, max: number) => {
-    if (num === undefined) {
-        return Math.floor((Math.random() * 10000)) % (max + 1);
-    }
-    let nextNum = Math.floor((Math.random() * 10000)) % (max + 1);
+    let nextNum = Math.floor((Math.random() * 10000)) % (max);
     while (nextNum === num) {
-        nextNum = Math.floor((Math.random() * 10000)) % (max + 1);
+        nextNum = Math.floor((Math.random() * 10000)) % (max);
     }
     return nextNum;
 };

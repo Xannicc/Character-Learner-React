@@ -17,12 +17,12 @@ const ObjectContainer = styled.div<{ selected: boolean }>`
     transition: all 0.2s ease-in-out;
 
     &:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
         background-color: ${({ theme, selected }) => selected ? theme.color.accent : theme.shadow.text[10]};
     }
 
     &:active {
-        transform: translateY(0.5em) scale(0.95);
+        transform: translateY(0.3em) scale(0.975);
     }
 `
 

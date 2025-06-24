@@ -35,16 +35,20 @@ const QuestionContainer = styled(motion.div)`
     .question-text {
         color: ${({ theme }) => theme.color.text};
         /* font-size: clamp(2rem, max(6vw, 4vh), 10rem); */
-        font-size: max(min(8rem, max(6vw, 4vh)), 2rem);
+        font-size: max(min(8rem, max(6vw, 4vh)), 4rem);
         text-align: center;
         width: fit-content;
         max-width: 90%;
         max-height: 90%;
+
+        @media (max-width: 768px) {
+            font-size: 4rem
+        }
     }
 
-     @media (max-width: 768px) {
+    @media (max-width: 768px) {
         width: 80vw;
-        height: max(60vh, 30em); 
+        max-height: max(60vh, 30em); 
     }
 `;
 

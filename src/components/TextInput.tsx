@@ -14,7 +14,7 @@ const TextInputContainer = styled.div`
 `
 
 const InputBox = styled.input`
-    height: 1.5em;
+    min-height: 1.5em;
     max-width: calc(60vw - 0.6em);
     font-size: 3rem;
     border-radius: 0.5em;
@@ -31,7 +31,8 @@ const InputBox = styled.input`
     }
 
     @media (max-width: 768px) {
-        height: 1em;
+        font-size: 2rem;
+        max-width: 70vw;
     }
 
 `

@@ -25,6 +25,7 @@ export interface SettingsType {
     enableRomaji: boolean;
     displayMode: "Kanji" | "Kana" | "English";
     writeMode: "Kanji" | "Kana" | "English";
+    orderMode: "Random" | "Shuffle";
 }
 
 interface SettingsFunctions {
@@ -34,6 +35,7 @@ interface SettingsFunctions {
     toggleEnableRomaji: (enableKanji: boolean) => void;
     updateDisplayMode: (displayMode: "Kanji" | "Kana" | "English") => void;
     updateWriteMode: (writeMode: "Kanji" | "Kana" | "English") => void;
+    updateOrderMode: (orderMode: "Random" | "Shuffle") => void;
 }
 
 interface FunctionsType extends ContentFunctions, SettingsFunctions {
@@ -86,6 +88,7 @@ function GlobalProvider({ children }: { children: ReactNode }) {
     const [enableRomaji, toggleEnableRomaji] = useToggleState(false);
     const [displayMode, updateDisplayMode] = useState<"Kanji" | "Kana" | "English">("Kanji");
     const [writeMode, updateWriteMode] = useState<"Kanji" | "Kana" | "English">("English");
+    const [orderMode, updateOrderMode] = useState<"Random" | "Shuffle">("Shuffle");
 
     const [userContent, contentDispatch] = useReducer(userContentReducer, []);
 
@@ -120,7 +123,8 @@ function GlobalProvider({ children }: { children: ReactNode }) {
                         forceKanji,
                         enableRomaji,
                         displayMode,
-                        writeMode
+                        writeMode,
+                        orderMode
                     },
                     globalFunctions: {
                         addContent,
@@ -132,7 +136,8 @@ function GlobalProvider({ children }: { children: ReactNode }) {
                         toggleForceKanji,
                         toggleEnableRomaji,
                         updateDisplayMode,
-                        updateWriteMode
+                        updateWriteMode,
+                        updateOrderMode
                     }
                 }}
             >

@@ -68,10 +68,43 @@ export const parseCSV = (file: File): Promise<csvFormat[]> => {
 //     return nextNum;
 // };
 
-export const generateNum = (num: number | undefined, max: number) => {
-    let nextNum = Math.floor((Math.random() * 10000)) % (max);
-    while (nextNum === num) {
-        nextNum = Math.floor((Math.random() * 10000)) % (max);
+let cachedSequence: number[] = [];
+let currentIndex = 0;
+
+export const generateNum = (
+  prev: number | number[] | undefined,
+  max?: number
+): number => {
+  // Case 1: normal mode (like your old function)
+  if (typeof prev === "number" && typeof max === "number") {
+    let nextNum = Math.floor(Math.random() * max);
+    while (nextNum === prev) {
+      nextNum = Math.floor(Math.random() * max);
     }
     return nextNum;
+  }
+
+  // Case 2: array mode
+  if (Array.isArray(prev)) {
+    // Initialize or reset sequence when exhausted
+    if (cachedSequence.length === 0 || currentIndex >= cachedSequence.length) {
+      cachedSequence = shuffleArray([...prev]);
+      currentIndex = 0;
+    }
+
+    const nextNum = cachedSequence[currentIndex];
+    currentIndex++;
+    return nextNum;
+  }
+
+  throw new Error("Invalid arguments passed to generateNum()");
+};
+
+// Fisher–Yates shuffle
+const shuffleArray = (arr: number[]) => {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 };

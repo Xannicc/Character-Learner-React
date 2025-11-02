@@ -25,12 +25,12 @@ const Answer = styled.h2`
     line-height: 2rem;
     min-height: 3rem;
     margin: 0;
-`
+`;
 
 function MainPage() {
     const {
         userContent,
-        userSettings: { enableRomaji, writeMode }
+        userSettings: { enableRomaji, writeMode, orderMode }
     } = useGlobalContext();
 
     const [index, setIndex] = useState<number | undefined>(undefined);
@@ -48,23 +48,49 @@ function MainPage() {
         }, []);
     }, [userContent]);
 
+    // initialize first index(es)
     useEffect(() => {
         if (sessionContent.length > 0 && index === undefined) {
-            const firstNum = generateNum(undefined, sessionContent.length);
-            setSessionIndexes([firstNum, generateNum(firstNum, sessionContent.length)]);
-            setIndex(0);
+            if (orderMode === "Random") {
+                const firstNum = generateNum(undefined, sessionContent.length);
+                const secondNum = generateNum(firstNum, sessionContent.length);
+                setSessionIndexes([firstNum, secondNum]);
+                setIndex(0);
+            } else if (orderMode === "Shuffle") {
+                const allIndexes = Array.from({ length: sessionContent.length }, (_, i) => i);
+                // get first two from shuffled sequence
+                const firstNum = generateNum(allIndexes);
+                const secondNum = generateNum(allIndexes);
+                setSessionIndexes([firstNum, secondNum]);
+                setIndex(0);
+            }
         }
-    }, []);
+    }, [orderMode, sessionContent.length]);
 
+
+    // validate user input
     useEffect(() => {
         if (index !== undefined) {
-            if (String(sessionContent[sessionIndexes[index]][
-                (writeMode === "Kana" || writeMode === "Kanji") && enableRomaji ? "Romaji" : writeMode]
-            )
-                .toLowerCase().split(";")
-                .map((w: string) => w.trim())
-                .includes(String(inputValue).toLowerCase())
-            ) {
+            const answerRaw = String(
+                sessionContent[sessionIndexes[index]][
+                    (writeMode === "Kana" || writeMode === "Kanji") && enableRomaji
+                        ? "Romaji"
+                        : writeMode
+                ]
+            );
+
+            const cleanText = (text: string) =>
+                text
+                    .replace(/\(.*?\)|\[.*?\]|\{.*?\}|<.*?>/g, "")
+                    .replace(/[^\p{L}\p{N}\s]/gu, "")
+                    .replace(/\s+/g, " ")
+                    .trim()
+                    .toLowerCase();
+
+            const validAnswers = answerRaw.split(";").map((w: string) => cleanText(w));
+            const userInputClean = cleanText(String(inputValue));
+
+            if (validAnswers.includes(userInputClean)) {
                 setInputValue("");
                 setTriggerAnimation("right");
             }
@@ -75,48 +101,52 @@ function MainPage() {
         if (index !== undefined) {
             if (triggerAnimation === "right") {
                 const nextIndex = index + 1;
-                setSessionIndexes([
-                    ...sessionIndexes,
-                    generateNum(sessionIndexes[index + 1], sessionContent.length),
-                ]);
+
+                if (orderMode === "Random") {
+                    const nextNum = generateNum(sessionIndexes[index + 1] ?? sessionIndexes[index], sessionContent.length);
+                    setSessionIndexes([...sessionIndexes, nextNum]);
+                } else if (orderMode === "Shuffle") {
+                    const allIndexes = Array.from({ length: sessionContent.length }, (_, i) => i);
+                    const nextNum = generateNum(allIndexes);
+                    setSessionIndexes([...sessionIndexes, nextNum]);
+                }
+
                 setIndex(nextIndex);
                 setTriggerAnimation(null);
-            }
-            else if (triggerAnimation === "left") {
-                if (index === 0) {
-                    return;
-                }
-                const nextIndex = index - 1;
-                setIndex(nextIndex);
+            } else if (triggerAnimation === "left") {
+                if (index === 0) return;
+                setIndex(index - 1);
                 setTriggerAnimation(null);
             }
         }
     };
 
     return (
-        <>
-            <MainContainer>
-                {sessionContent.length > 0 && index !== undefined && (
-                    <>
-                        <Question
-                            content={sessionContent}
-                            index={index}
-                            sessionIndexes={sessionIndexes}
-                            triggerAnimation={triggerAnimation}
-                            setTriggerAnimation={setTriggerAnimation}
-                            onAnimationComplete={handleAnimationComplete}
-                        />
-                        <Answer>{showAnswer && index !== undefined ? sessionContent[sessionIndexes[index]].English + "  " + sessionContent[sessionIndexes[index]].Kana : ""}</Answer>
-                        <TextInput
-                            inputValue={inputValue}
-                            setInputValue={setInputValue}
-                            showAnswer={showAnswer}
-                            toggleShowAnswer={toggleShowAnswer}
-                        />
-                    </>
-                )}
-            </MainContainer>
-        </>
+        <MainContainer>
+            {sessionContent.length > 0 && index !== undefined && (
+                <>
+                    <Question
+                        content={sessionContent}
+                        index={index}
+                        sessionIndexes={sessionIndexes}
+                        triggerAnimation={triggerAnimation}
+                        setTriggerAnimation={setTriggerAnimation}
+                        onAnimationComplete={handleAnimationComplete}
+                    />
+                    <Answer>
+                        {showAnswer && index !== undefined
+                            ? `${sessionContent[sessionIndexes[index]].English}  ${sessionContent[sessionIndexes[index]].Kana}`
+                            : ""}
+                    </Answer>
+                    <TextInput
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        showAnswer={showAnswer}
+                        toggleShowAnswer={toggleShowAnswer}
+                    />
+                </>
+            )}
+        </MainContainer>
     );
 }
 
